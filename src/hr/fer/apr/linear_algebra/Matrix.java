@@ -113,7 +113,7 @@ public class Matrix  extends MathMat{
 		}
 		
 		sb.replace(sb.lastIndexOf("\n"), sb.lastIndexOf("\n")+1, "");
-		sb.append("]");
+		sb.append("]\n");
 		
 		return sb.toString();
 	}
