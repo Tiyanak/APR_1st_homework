@@ -67,11 +67,79 @@ public class ConsoleParser {
             signEquals(line);
         }else if(line.matches("^double [a-zA-Z]+$")) {
             createNewDouble(line);
-        }else if(line.equalsIgnoreCase("exit")){
+        }else if(line.equalsIgnoreCase("exit")) {
             exit();
+        }else if(line.contains(".lu")) {
+            LU(line);
+        }else if(line.contains(".sf")) {
+            SF(line);
+        }else if(line.contains(".sb")) {
+            SB(line);
+        }else if(line.contains(".lup")) {
+            LUP(line);
+        }else if(line.contains(".solveX")){
+            solveX(line);
         }else{
             System.out.println("Unknown operation!");
         }
+    }
+
+    private void LU(String line){
+        IMatrix m = matrixMap.get(line.substring(0, line.indexOf(".")));
+
+        m.LU();
+
+        matrixMap.replace(line.substring(0, line.indexOf(".")), m);
+
+        m.printMatrix();
+    }
+
+    private void SF(String line){
+        IMatrix m = matrixMap.get(line.substring(0, line.indexOf(".")));
+        IMatrix l = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(")")));
+
+        m.SF(l);
+
+        matrixMap.replace(line.substring(0, line.indexOf(".")), m);
+
+        m.printMatrix();
+    }
+
+    private void SB(String line){
+        IMatrix m = matrixMap.get(line.substring(0, line.indexOf(".")));
+        IMatrix l = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(")")));
+
+        m.SB(l);
+
+        matrixMap.replace(line.substring(0, line.indexOf(".")), m);
+
+        m.printMatrix();
+    }
+
+    private void LUP(String line){
+        IMatrix m = matrixMap.get(line.substring(0, line.indexOf("[.]")));
+
+        m.LUP();
+
+        matrixMap.replace(line.substring(0, line.indexOf("[.]")), m);
+
+        m.printMatrix();
+    }
+
+    private void solveX(String line){
+        IMatrix x = matrixMap.get(line.substring(0, line.indexOf(".")));
+        IMatrix A = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(",")));
+        IMatrix b = matrixMap.get(line.substring(line.indexOf(" ")+1, line.indexOf(")")));
+
+        A.LU().printMatrix();
+        b.SF(A).printMatrix();
+        b.SB(A).printMatrix();
+
+        x = b.copy();
+
+        matrixMap.replace(line.substring(0, line.indexOf(".")), x);
+
+        x.printMatrix();
     }
 
     private void createNewDouble(String line){
@@ -115,18 +183,32 @@ public class ConsoleParser {
 
             matrixMap.get(left).printMatrix();
 
-        }else if(doubleMap.containsKey(left) && doubleMap.containsKey(right)){
+        }else if(doubleMap.containsKey(left) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
 
-            doubleMap.replace(left, doubleMap.get(right));
+            if(right.matches("[0-9]+")){
+                double x = Double.parseDouble(right);
+                doubleMap.replace(left, x);
+                System.out.println(left + " = " + doubleMap.get(left));
 
-            System.out.println(left + " = " + doubleMap.get(right));
+            }else {
 
-        }else if(matrixMap.containsKey(left.substring(0, left.indexOf("["))) && doubleMap.containsKey(right)){
+                doubleMap.replace(left, doubleMap.get(right));
+                System.out.println(left + " = " + doubleMap.get(left));
+            }
+
+        }else if(left.contains("[") && matrixMap.containsKey(left.substring(0, left.indexOf("["))) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
 
             IMatrix l = matrixMap.get(left.substring(0, left.indexOf("[")));
             int i = Integer.parseInt(left.substring(left.indexOf("[")+1, left.indexOf("]")));
             int j = Integer.parseInt(left.substring(left.lastIndexOf("[")+1, left.lastIndexOf("]")));
-            l.setElement(i, j, doubleMap.get(right));
+
+            if(right.matches("[0-9]+")){
+                double x = Double.parseDouble(right);
+                l.setElement(i, j, x);
+            }else{
+                l.setElement(i, j, doubleMap.get(right));
+            }
+
             matrixMap.replace(left.substring(0, left.indexOf("[")), l);
 
             System.out.println(left + " = " + l.getElement(i, j));
@@ -139,8 +221,8 @@ public class ConsoleParser {
     }
 
     private void sumAssociate(String line){
-        String left = line.split(" = ")[0];
-        String right = line.split(" = ")[1];
+        String left = line.split(" [+]= ")[0];
+        String right = line.split(" [+]= ")[1];
 
         right = right.replace(";", "");
 
@@ -157,22 +239,36 @@ public class ConsoleParser {
 
             l.printMatrix();
 
-        }else if(doubleMap.containsKey(left) && doubleMap.containsKey(right)){
+        }else if(doubleMap.containsKey(left) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
 
             double l = doubleMap.get(left);
-            double r = doubleMap.get(right);
 
-            l = l + r;
-            doubleMap.replace(left, l);
+            if(right.matches("[0-9]+")){
 
-            System.out.println(left + " = " + l);
+                double r = Double.parseDouble(right);
+                doubleMap.replace(left, l + r);
 
-        }else if(matrixMap.containsKey(left.substring(0, left.indexOf("["))) && doubleMap.containsKey(right)){
+            }else {
+
+                doubleMap.replace(left, doubleMap.get(right) + l);
+
+            }
+
+            System.out.println(left + " = " + doubleMap.get(left));
+
+        }else if(left.contains("[") && matrixMap.containsKey(left.substring(0, left.indexOf("["))) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
 
             IMatrix l = matrixMap.get(left.substring(0, left.indexOf("[")));
             int i = Integer.parseInt(left.substring(left.indexOf("[")+1, left.indexOf("]")));
             int j = Integer.parseInt(left.substring(left.lastIndexOf("[")+1, left.lastIndexOf("]")));
-            l.setElement(i, j, l.getElement(i, j) + doubleMap.get(right));
+            double lEl = l.getElement(i, j);
+
+            if(right.matches("[0-9]+")){
+                double x = Double.parseDouble(right);
+                l.setElement(i, j, x + lEl);
+            }else{
+                l.setElement(i, j, doubleMap.get(right) + lEl);
+            }
 
             matrixMap.replace(left.substring(0, left.indexOf("[")), l);
 
@@ -186,8 +282,8 @@ public class ConsoleParser {
     }
 
     private void subAssociate(String line){
-        String left = line.split(" = ")[0];
-        String right = line.split(" = ")[1];
+        String left = line.split(" [-]= ")[0];
+        String right = line.split(" [-]= ")[1];
 
         right = right.replace(";", "");
 
@@ -204,22 +300,36 @@ public class ConsoleParser {
 
             l.printMatrix();
 
-        }else if(doubleMap.containsKey(left) && doubleMap.containsKey(right)){
+        }else if(doubleMap.containsKey(left) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
 
             double l = doubleMap.get(left);
-            double r = doubleMap.get(right);
 
-            l = l - r;
-            doubleMap.replace(left, l);
+            if(right.matches("[0-9]+")){
 
-            System.out.println(left + " = " + l);
+                double r = Double.parseDouble(right);
+                doubleMap.replace(left, l - r);
 
-        }else if(matrixMap.containsKey(left.substring(0, left.indexOf("["))) && doubleMap.containsKey(right)){
+            }else {
+
+                doubleMap.replace(left, l - doubleMap.get(right));
+
+            }
+
+            System.out.println(left + " = " + doubleMap.get(left));
+
+        }else if(left.contains("[") && matrixMap.containsKey(left.substring(0, left.indexOf("["))) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
 
             IMatrix l = matrixMap.get(left.substring(0, left.indexOf("[")));
             int i = Integer.parseInt(left.substring(left.indexOf("[")+1, left.indexOf("]")));
             int j = Integer.parseInt(left.substring(left.lastIndexOf("[")+1, left.lastIndexOf("]")));
-            l.setElement(i, j, l.getElement(i, j) - doubleMap.get(right));
+            double lEl = l.getElement(i, j);
+
+            if(right.matches("[0-9]+")){
+                double x = Double.parseDouble(right);
+                l.setElement(i, j, lEl - x);
+            }else{
+                l.setElement(i, j, lEl - doubleMap.get(right));
+            }
 
             matrixMap.replace(left.substring(0, left.indexOf("[")), l);
 
@@ -233,31 +343,47 @@ public class ConsoleParser {
     }
 
     private void isEquals(String line){
-        String left = line.split(" = ")[0];
-        String right = line.split(" = ")[1];
+        String left = line.split(" == ")[0];
+        String right = line.split(" == ")[1];
 
         right = right.replace(";", "");
 
         right = solveRightMatrix(right);
         left = solveLeftMatrix(left);
 
-        if(doubleMap.containsKey(left) && doubleMap.containsKey(right)){
-            if(doubleMap.get(left) == doubleMap.get(right)){
-                System.out.println("True");
-            }else{
-                System.out.println("False");
-            }
-        }else if(matrixMap.containsKey(left) && matrixMap.containsKey(right)){
+        if(matrixMap.containsKey(left) && matrixMap.containsKey(right)){
             if(matrixMap.get(left).equals(matrixMap.get(right))){
                 System.out.println("True");
             }else{
                 System.out.println("False");
             }
-        }else if(matrixMap.containsKey(left.substring(0, left.indexOf("["))) && doubleMap.containsKey(right)){
+
+        }else if(doubleMap.containsKey(left) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
+            double x = 0.0;
+            if(right.matches("[0-9]+")){
+                x = Double.parseDouble(right);
+            }else{
+                x = doubleMap.get(right);
+            }
+
+            if(doubleMap.get(left) == x){
+                System.out.println("True");
+            }else{
+                System.out.println("False");
+            }
+
+        }else if(left.contains("[") && matrixMap.containsKey(left.substring(0, left.indexOf("["))) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
             int i = Integer.parseInt(left.substring(left.indexOf("[")+1, left.indexOf("]")));
             int j = Integer.parseInt(left.substring(left.lastIndexOf("[")+1, left.lastIndexOf("]")));
 
-            if(matrixMap.get(left.substring(0, left.indexOf("["))).getElement(i, j) == doubleMap.get(right)){
+            double x = 0.0;
+            if(right.matches("[0-9]+")){
+                x = Double.parseDouble(right);
+            }else{
+                x = doubleMap.get(right);
+            }
+
+            if(matrixMap.get(left.substring(0, left.indexOf("["))).getElement(i, j) == x){
                 System.out.println("True");
             }else{
                 System.out.println("False");
