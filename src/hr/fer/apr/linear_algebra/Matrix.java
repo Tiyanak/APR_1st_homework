@@ -75,6 +75,16 @@ public class Matrix  extends MathMat{
 		
 		return new Matrix(this.rows, this.cols, copyElements);
 	}
+
+	public void setMatrix(IMatrix matrix){
+		this.cols = matrix.getColsCount();
+		this.rows = matrix.getRowsCount();
+		for(int i=0; i<this.rows; i++){
+			for(int j=0; j<this.cols; j++){
+				this.elements[i][j] = matrix.getElement(i, j);
+			}
+		}
+	}
 	
 	@Override
 	public boolean equals(Object o){
@@ -111,11 +121,15 @@ public class Matrix  extends MathMat{
 			}
 			sb.append("\n");
 		}
-		
-		sb.replace(sb.lastIndexOf("\n"), sb.lastIndexOf("\n")+1, "");
-		sb.append("]\n");
-		
-		return sb.toString();
+
+		if(sb.length() == 1){
+			return "[ ]";
+		}else {
+			sb.replace(sb.lastIndexOf("\n"), sb.lastIndexOf("\n") + 1, "");
+			sb.append("]\n");
+
+			return sb.toString();
+		}
 	}
 	
 	

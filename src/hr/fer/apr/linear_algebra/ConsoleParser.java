@@ -15,6 +15,7 @@ public class ConsoleParser {
 
     private Map<String, IMatrix> matrixMap;
     private Map<String, Double> doubleMap;
+    private Map<String, int[]> indexingMap;
     private String dekstopPath;
     private boolean isRightMatrix;
     private IMatrix rightSolvedMatrix;
@@ -28,6 +29,7 @@ public class ConsoleParser {
 
         this.matrixMap = new HashMap<>();
         this.doubleMap = new HashMap<>();
+        this.indexingMap = new HashMap<>();
         this.dekstopPath = "C:\\Users\\Igor Farszky\\Desktop\\";
         this.isRightMatrix = true;
         this.fakerCounter = 0;
@@ -69,76 +71,144 @@ public class ConsoleParser {
             createNewDouble(line);
         }else if(line.equalsIgnoreCase("exit")) {
             exit();
+        }else if(line.contains(".lup")) {
+            LUP(line);
         }else if(line.contains(".lu")) {
             LU(line);
         }else if(line.contains(".sf")) {
             SF(line);
         }else if(line.contains(".sb")) {
             SB(line);
-        }else if(line.contains(".lup")) {
-            LUP(line);
-        }else if(line.contains(".solveX")){
-            solveX(line);
+        }else if(line.contains(".solveXlup")){
+            solveXlup(line);
+        }else if(line.contains(".solveXlu")){
+            solveXlu(line);
         }else{
             System.out.println("Unknown operation!");
         }
     }
 
     private void LU(String line){
-        IMatrix m = matrixMap.get(line.substring(0, line.indexOf(".")));
+        String name = line.substring(0, line.indexOf("."));
+        IMatrix m = matrixMap.get(name);
+
+        if(indexingMap.containsKey(name)){
+            indexingMap.remove(name);
+        }
 
         m.LU();
 
         matrixMap.replace(line.substring(0, line.indexOf(".")), m);
 
+        System.out.println("LU: \n");
         m.printMatrix();
     }
 
     private void SF(String line){
-        IMatrix m = matrixMap.get(line.substring(0, line.indexOf(".")));
+        String name = line.substring(0, line.indexOf("."));
+        IMatrix m = matrixMap.get(name);
+        if(!line.matches("[a-zA-Z]+[.][a-zA-Z]+[(][a-zA-Z]+[)]")){
+            System.out.println("You didnt gave me an L matrix!");
+            return;
+        }
         IMatrix l = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(")")));
 
-        m.SF(l);
+        if(indexingMap.containsKey(name)){
+            m.SF(l, indexingMap.get(name), true);
+        }else{
+            m.SF(l, new int[1], false);
+        }
 
         matrixMap.replace(line.substring(0, line.indexOf(".")), m);
 
+        System.out.println("SF: \n");
         m.printMatrix();
     }
 
     private void SB(String line){
         IMatrix m = matrixMap.get(line.substring(0, line.indexOf(".")));
+        if(!line.matches("[a-zA-Z]+[.][a-zA-Z]+[(][a-zA-Z]+[)]")){
+            System.out.println("You didnt gave me an U matrix!");
+            return;
+        }
         IMatrix l = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(")")));
 
         m.SB(l);
 
         matrixMap.replace(line.substring(0, line.indexOf(".")), m);
 
+        System.out.println("SB: \n");
         m.printMatrix();
     }
 
     private void LUP(String line){
-        IMatrix m = matrixMap.get(line.substring(0, line.indexOf("[.]")));
+        String name = line.substring(0, line.indexOf("."));
+        IMatrix m = matrixMap.get(name);
 
-        m.LUP();
+        int[] P = m.LUP();
 
-        matrixMap.replace(line.substring(0, line.indexOf("[.]")), m);
+        if(indexingMap.containsKey(name)){
+            indexingMap.replace(name, P);
+        }else{
+            indexingMap.put(name, P);
+        }
 
+        matrixMap.replace(line.substring(0, line.indexOf(".")), m);
+
+        System.out.println("LUP: \n");
         m.printMatrix();
     }
 
-    private void solveX(String line){
+    private void solveXlu(String line){
         IMatrix x = matrixMap.get(line.substring(0, line.indexOf(".")));
         IMatrix A = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(",")));
         IMatrix b = matrixMap.get(line.substring(line.indexOf(" ")+1, line.indexOf(")")));
 
-        A.LU().printMatrix();
-        b.SF(A).printMatrix();
+        boolean success = A.LU();
+        System.out.println("LU finished successfully?: " + success);
+
+        if(success) {
+            System.out.println("A: \n");
+            A.printMatrix();
+            System.out.println("y (SF): \n");
+            b.SF(A, new int[1], false).printMatrix();
+            System.out.println("x (SB): \n");
+            b.SB(A).printMatrix();
+
+            x = b.copy();
+
+            matrixMap.replace(line.substring(0, line.indexOf(".")), x);
+
+            System.out.println("solved (LU): \n");
+            x.printMatrix();
+        }
+    }
+
+    private void solveXlup(String line){
+        IMatrix x = matrixMap.get(line.substring(0, line.indexOf(".")));
+        IMatrix A = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(",")));
+        IMatrix b = matrixMap.get(line.substring(line.indexOf(" ")+1, line.indexOf(")")));
+
+        int[] P = A.LUP();
+        System.out.println("A: \n");
+        A.printMatrix();
+        int k = 0;
+        System.out.println("Indexing: \n");
+        for(int i: P){
+            System.out.print("P[" + k + "] : " + i + "; ");
+            k++;
+        }
+        System.out.println("");
+        System.out.println("y (SF): \n");
+        b.SF(A, P, true).printMatrix();
+        System.out.println("x (SB): \n");
         b.SB(A).printMatrix();
 
         x = b.copy();
 
         matrixMap.replace(line.substring(0, line.indexOf(".")), x);
 
+        System.out.println("solved (lup): \n");
         x.printMatrix();
     }
 
@@ -179,7 +249,7 @@ public class ConsoleParser {
 
         if(matrixMap.containsKey(left) && matrixMap.containsKey(right)){
 
-            matrixMap.replace(left, matrixMap.get(right));
+            matrixMap.replace(left, matrixMap.get(right).copy());
 
             matrixMap.get(left).printMatrix();
 
@@ -234,8 +304,7 @@ public class ConsoleParser {
             IMatrix l = matrixMap.get(left);
             IMatrix r = matrixMap.get(right);
 
-            l.sum(r);
-            matrixMap.replace(left, l);
+            matrixMap.replace(left, l.nSum(r));
 
             l.printMatrix();
 
@@ -295,8 +364,7 @@ public class ConsoleParser {
             IMatrix l = matrixMap.get(left);
             IMatrix r = matrixMap.get(right);
 
-            l.sub(r);
-            matrixMap.replace(left, l);
+            matrixMap.replace(left, l.nSub(r));
 
             l.printMatrix();
 
@@ -486,7 +554,7 @@ public class ConsoleParser {
 
             calculate(before, after, "/", this.fakerCounter);
 
-            String ret = expression(exp.replace(before + " - " + after, fakeVariable + this.fakerCounter));
+            String ret = expression(exp.replace(before + " / " + after, fakeVariable + this.fakerCounter));
 
             return ret;
 

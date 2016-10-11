@@ -12,6 +12,7 @@ public interface IMatrix {
 	public void setElement(int row, int col, double element);
 	public IMatrix copy();
 	public void printMatrix();
+	public void setMatrix(IMatrix matrix);
 	
 	public IMatrix transpose();
 	
@@ -25,10 +26,12 @@ public interface IMatrix {
 
 	public IMatrix scalarMul(double value);
 	public IMatrix nScalarMul(double value);
-	
-	public IMatrix LU();
-	public IMatrix SF(IMatrix L);
+
+	public void changeRows(int[] P);
+
+	public boolean LU();
+	public IMatrix SF(IMatrix L, int[] P, boolean indexing);
 	public IMatrix SB(IMatrix U);
-	public IMatrix LUP();
+	public int[] LUP();
 
 }
