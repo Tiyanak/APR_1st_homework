@@ -24,8 +24,8 @@ public class Algorithms {
     private IFunctions f;
 
     public Algorithms() {
-        this.l = new double[100];
-        this.r = new double[100];
+        this.l = new double[1];
+        this.r = new double[1];
         this.h = 1.0;
         this.e = 0.000001;
         this.alfa = 1;
@@ -44,7 +44,7 @@ public class Algorithms {
 
         for (int i = 0; i < a.length; i++) {
             c[i] = b[i] - k * (b[i] - a[i]);
-            d[i] = a[i] - k * (b[i] - a[i]);
+            d[i] = a[i] + k * (b[i] - a[i]);
         }
 
         double fc = f.execute(c);
@@ -53,27 +53,40 @@ public class Algorithms {
         int i = 0;
         while (distance(a, b) > this.e) {
             if (fc < fd) {
-                b = d;
-                d = c;
+                b = d.clone();
+                d = c.clone();
                 for (int j = 0; j < a.length; j++) {
                     c[j] = b[j] - k * (b[j] - a[j]);
                 }
                 fd = fc;
                 fc = f.execute(c);
             } else {
-                a = c;
-                c = d;
+                a = c.clone();
+                c = d.clone();
                 for (int j = 0; j < a.length; j++) {
                     d[j] = a[j] + k * (b[j] - a[j]);
                 }
                 fc = fd;
                 fd = f.execute(d);
             }
+
+            System.out.println("a\tb\tc\td");
+            String as = "";
+            String bs = "";
+            String cs = "";
+            String ds = "";
+            for(int k=0; k<a.length; k++){
+                as += a[k] + ",";
+                bs += b[k];
+                cs += c[k];
+                ds += d[k];
+            }
+            System.out.println(as + "\t" + cs + "\t" + ds + "\t" + bs);
         }
 
         double[] ret = new double[a.length];
         for (int j = 0; j < a.length; j++) {
-            ret[j] = (a[j] + b[j]) / 2;
+            ret[j] = (a[j] + b[j]) / 2.0;
         }
 
         return ret;
@@ -87,12 +100,12 @@ public class Algorithms {
             this.r[i] = 0.0;
         }
 
-        for (int i = 0; i < tocka.length; i++) {
+        for (int i = 0; i < l.length; i++) {
             this.l[i] = tocka[i] - this.h;
             this.r[i] = tocka[i] + this.h;
         }
 
-        double[] m = tocka;
+        double[] m = tocka.clone();
         double fl, fm, fr;
         int step = 1;
 
@@ -107,10 +120,10 @@ public class Algorithms {
         } else if (fm > fr) {
 
             do {
-                this.l = m;
-                m = this.r;
+                this.l = m.clone();
+                m = this.r.clone();
                 fm = fr;
-                for (int i = 0; i < tocka.length; i++) {
+                for (int i = 0; i < l.length; i++) {
                     this.r[i] = tocka[i] + this.h * (step *= 2);
                 }
                 fr = f.execute(this.r);
@@ -119,13 +132,13 @@ public class Algorithms {
         } else {
 
             do {
-                this.r = m;
-                m = this.l;
+                this.r = m.clone();
+                m = this.l.clone();
                 fm = fl;
-                for (int i = 0; i < tocka.length; i++) {
+                for (int i = 0; i < l.length; i++) {
                     this.l[i] = tocka[i] - this.h * (step *= 2);
                 }
-                fr = f.execute(this.l);
+                fl = f.execute(this.l);
             } while (fm > fl);
         }
 
@@ -138,10 +151,8 @@ public class Algorithms {
         do{
             xs = x.clone();
             for (int i=0; i<xs.length; i++){
-                unimodalni(xs);
-                this.l[1] = 0.0;
-                this.r[1] = 0.0;
-                double[] lam = golden_cut(this.l, this.r);
+                unimodalni(new double[]{xs[i]});
+                double[] lam = golden_cut(this.l.clone(), this.r.clone());
                 x[i] = x[i] + lam[0] * e;
             }
         }while (distance(x, xs) > e);
@@ -215,14 +226,14 @@ public class Algorithms {
     public double[] hookeJeves(double[] X0) {
 
         double[] Xp = X0.clone(), Xb = X0.clone();
-        double Dx = 0.0;
+        double Dx = 1.0;
 
         do {
             double[] Xn = istrazi(Xp, Dx);
 
             if (f.execute(Xn) < f.execute(Xb)) {
                 for (int i = 0; i < Xp.length; i++) {
-                    Xp[i] = 2 * Xn[i] * Xb[i];
+                    Xp[i] = 2 * Xn[i] - Xb[i];
                 }
                 Xb = Xn.clone();
             } else {
@@ -239,7 +250,7 @@ public class Algorithms {
         double[] x = Xp.clone();
         int n = x.length; // ne znam neki n
 
-        for (int i = 1; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             double P = f.execute(x);
             x[i] = x[i] + Dx;
             double N = f.execute(x);
@@ -253,7 +264,7 @@ public class Algorithms {
             }
         }
 
-        return x;
+        return x.clone();
     }
 
     private double distance(double[] a, double[] b) {
@@ -449,5 +460,13 @@ public class Algorithms {
 
     public void setSigma(double sigma) {
         this.sigma = sigma;
+    }
+
+    public double[] getL() {
+        return l;
+    }
+
+    public double[] getR() {
+        return r;
     }
 }
