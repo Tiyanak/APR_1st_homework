@@ -6,7 +6,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Glavna klasa koja sluzi za pokretanje prve laboratorijske vjezbe
+ */
+
 public class Main {
+
+	/**
+	 * Glavna metoda pokrece zadatak, vrti beskonacnu while petlju dok korisnik ne upise exit
+	 * while petlja simulira konzolu u kojoj korisnik upisuje naredbe koje zeli
+	 * @param args
+	 * @throws FileNotFoundException
+	 */
 
 	public static void main(String[] args) throws FileNotFoundException {
 		

@@ -10,8 +10,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa sadrzi staticke metode za citanje i pisanje matrica iz datoteka
+ */
+
 public abstract class MatrixFile {
-	
+
+	/**
+	 * Citaj matricu iz tekstualne datoteke - izgled datoteke:
+	 * 1 2 3
+	 * 4 5 6
+	 * 7 8 9
+	 * @param path - put do datoteke matrice
+	 * @return Matrix - stvara novu matricu velicine i sa elementima kao iz datoteke
+	 * @throws FileNotFoundException
+	 */
 	public static IMatrix readMatrix(String path) throws FileNotFoundException{
 		BufferedReader br = new BufferedReader(new FileReader(path));
 		
@@ -51,7 +64,16 @@ public abstract class MatrixFile {
 		
 		return null;
 	}
-	
+
+	/**
+	 * Pise matricu u tekstualnu datoteku u obliku:
+	 * 1 2 3
+	 * 4 5 6
+	 * 7 8 9
+	 * @param path - put do datoteke (ako je nema stvara novu)
+	 * @param matrix - matrica koju pise u datoteku
+	 * @throws IOException
+	 */
 	public static void writeMatrix(String path, IMatrix matrix) throws IOException{
 		StringBuilder sb = new StringBuilder();
 		
@@ -69,7 +91,12 @@ public abstract class MatrixFile {
 		
 		bw.close();
 	}
-	
+
+	/**
+	 * Ispisuje matricu iz datoteke direktno na ekran bez da ju sprema negdje
+	 * @param path - put do datoteke
+	 * @throws FileNotFoundException
+	 */
 	public static void printMatrix(String path) throws FileNotFoundException{
 		System.out.println(readMatrix(path).toString());
 	}

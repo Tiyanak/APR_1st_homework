@@ -1,6 +1,7 @@
 package hr.fer.apr.linear_algebra;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.util.Date;
 import java.util.DoubleSummaryStatistics;
@@ -9,21 +10,21 @@ import java.util.Map;
 import java.util.jar.Pack200;
 
 /**
+ * Razred predstavlja konzolu
+ * Parsira ulaz koji korisnik upisuje te poziva zadane metode prema parsiranom ulazu
+ */
+
+/**
  * Created by Igor Farszky on 5.10.2016..
  */
 public class ConsoleParser {
 
-    private Map<String, IMatrix> matrixMap;
-    private Map<String, Double> doubleMap;
-    private Map<String, int[]> indexingMap;
-    private String dekstopPath;
-    private boolean isRightMatrix;
-    private IMatrix rightSolvedMatrix;
-    private double rightSolvedDouble;
-    private IMatrix leftSolvedMatrix;
-    private double leftSolvedDouble;
-    private static final String fakeVariable = "myOwnPersonalUniqueTempVariable";
-    private int fakerCounter;
+    private Map<String, IMatrix> matrixMap; // Mapa varijabli matrica
+    private Map<String, Double> doubleMap; // Mapa varijabli tipa double
+    private Map<String, int[]> indexingMap; // Mapa indexa poretka matrice
+    private String dekstopPath; // Path do desktopa gdje se nalaze datoteka sa matricama
+    private static final String fakeVariable = "myOwnPersonalUniqueTempVariable"; // Lazno ime varijable za racunanje izraza
+    private int fakerCounter; // Brojac lazne varijable (kako se nebi reusala ista u krive svrhe)
 
     public ConsoleParser() {
 
@@ -31,7 +32,6 @@ public class ConsoleParser {
         this.doubleMap = new HashMap<>();
         this.indexingMap = new HashMap<>();
         this.dekstopPath = "C:\\Users\\Igor Farszky\\Desktop\\";
-        this.isRightMatrix = true;
         this.fakerCounter = 0;
 
     }
@@ -60,8 +60,14 @@ public class ConsoleParser {
         this.dekstopPath = dekstopPath;
     }
 
+    /**
+     * Glavna metoda za parsiranje koja se pozica svaki put kad korisnik nesto upise
+     * Parsira stvaranje varijabli, exit, metode dekompozicije, pridruzivanje, pisanje u datoteku
+     * @param line - String korinsikova naredba
+     * @throws FileNotFoundException
+     */
     public void parser(String line) throws FileNotFoundException {
-        if(line.contains(".txt")){
+        if(line.contains(".txt") && !line.contains(".write(")){
             readMatrix(line);
         }else if(line.matches("^[a-zA-Z]+$")){
             createEmptyMatrix(line);
@@ -81,13 +87,39 @@ public class ConsoleParser {
             SB(line);
         }else if(line.contains(".solveXlup")){
             solveXlup(line);
-        }else if(line.contains(".solveXlu")){
+        }else if(line.contains(".solveXlu")) {
             solveXlu(line);
+        }else if(line.contains(".write(")){
+            writeMatrix(line);
         }else{
             System.out.println("Unknown operation!");
         }
     }
 
+    /**
+     * Metoda pise matricu u datoteku
+     * usage: A.write(ime)
+     * @param line
+     */
+    private void writeMatrix(String line){
+
+        IMatrix matrix = matrixMap.get(line.substring(0, line.indexOf(".")));
+        String filename = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+
+        try {
+            MatrixFile.writeMatrix(dekstopPath + filename, matrix);
+            System.out.println("Matrix saved on Desktop under name: " + filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Metoda za parsiranje LU dekompozicije
+     * usage: A.lu()
+     * @param line
+     */
     private void LU(String line){
         String name = line.substring(0, line.indexOf("."));
         IMatrix m = matrixMap.get(name);
@@ -104,6 +136,11 @@ public class ConsoleParser {
         m.printMatrix();
     }
 
+    /**
+     * Metoda za parsiranje substitucije unaprijed
+     * usage: b.sf(A)
+     * @param line
+     */
     private void SF(String line){
         String name = line.substring(0, line.indexOf("."));
         IMatrix m = matrixMap.get(name);
@@ -125,6 +162,11 @@ public class ConsoleParser {
         m.printMatrix();
     }
 
+    /**
+     * Metoda za parsiranje substitucije unazad
+     * usage: b.sb(A)
+     * @param line
+     */
     private void SB(String line){
         IMatrix m = matrixMap.get(line.substring(0, line.indexOf(".")));
         if(!line.matches("[a-zA-Z]+[.][a-zA-Z]+[(][a-zA-Z]+[)]")){
@@ -141,6 +183,11 @@ public class ConsoleParser {
         m.printMatrix();
     }
 
+    /**
+     * Metoda za parsiranje lup dekompozicije
+     * usage: A.lup()
+     * @param line
+     */
     private void LUP(String line){
         String name = line.substring(0, line.indexOf("."));
         IMatrix m = matrixMap.get(name);
@@ -159,23 +206,27 @@ public class ConsoleParser {
         m.printMatrix();
     }
 
+    /**
+     * Metoda za parsiranje rjesavanja sustava metodom lu dekompozicije
+     * usage: x.solveXlu(A, b)
+     * @param line
+     */
     private void solveXlu(String line){
         IMatrix x = matrixMap.get(line.substring(0, line.indexOf(".")));
-        IMatrix A = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(",")));
+        IMatrix A = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(","))).copy();
         IMatrix b = matrixMap.get(line.substring(line.indexOf(" ")+1, line.indexOf(")")));
 
         boolean success = A.LU();
         System.out.println("LU finished successfully?: " + success);
 
         if(success) {
+            x = b.copy();
             System.out.println("A: \n");
             A.printMatrix();
             System.out.println("y (SF): \n");
-            b.SF(A, new int[1], false).printMatrix();
+            x.SF(A, new int[1], false).printMatrix();
             System.out.println("x (SB): \n");
-            b.SB(A).printMatrix();
-
-            x = b.copy();
+            x.SB(A).printMatrix();
 
             matrixMap.replace(line.substring(0, line.indexOf(".")), x);
 
@@ -184,9 +235,14 @@ public class ConsoleParser {
         }
     }
 
+    /**
+     * Metoda za parsiranje rjesavanja sustava metodom lup dekompozicije
+     * usage: x.solveXlup(A, b)
+     * @param line
+     */
     private void solveXlup(String line){
         IMatrix x = matrixMap.get(line.substring(0, line.indexOf(".")));
-        IMatrix A = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(",")));
+        IMatrix A = matrixMap.get(line.substring(line.indexOf("(")+1, line.indexOf(","))).copy();
         IMatrix b = matrixMap.get(line.substring(line.indexOf(" ")+1, line.indexOf(")")));
 
         int[] P = A.LUP();
@@ -198,13 +254,12 @@ public class ConsoleParser {
             System.out.print("P[" + k + "] : " + i + "; ");
             k++;
         }
+        x = b.copy();
         System.out.println("");
         System.out.println("y (SF): \n");
-        b.SF(A, P, true).printMatrix();
+        x.SF(A, P, true).printMatrix();
         System.out.println("x (SB): \n");
-        b.SB(A).printMatrix();
-
-        x = b.copy();
+        x.SB(A).printMatrix();
 
         matrixMap.replace(line.substring(0, line.indexOf(".")), x);
 
@@ -212,6 +267,11 @@ public class ConsoleParser {
         x.printMatrix();
     }
 
+    /**
+     * Metoda za stvaranje nove varijable tipa double
+     * usage: double x
+     * @param line
+     */
     private void createNewDouble(String line){
         String name = line.split(" ")[1].trim();
 
@@ -224,6 +284,11 @@ public class ConsoleParser {
 
     }
 
+    /**
+     * Metoda za parsiranje znaka pridruzivanja
+     * moze biti: =, +=, -=, ==
+     * @param line
+     */
     private void signEquals(String line){
         if(line.contains(" = ")){
             associate(line);
@@ -238,21 +303,30 @@ public class ConsoleParser {
         }
     }
 
+    /**
+     * Metoda za parsiranje metode pridruzivanja: x = 5 + y - (3 - z)
+     * Moguce sa matricama, double virjednostima, elemntima matrice...
+     * x[1][1] = 5 * (y + z[0][3])
+     * X = U * L + B
+     * @param line
+     */
     private void associate(String line){
         String left = line.split(" = ")[0];
         String right = line.split(" = ")[1];
 
         right = right.replace(";", "");
 
-        right = solveRightMatrix(right);
         left = solveLeftMatrix(left);
+        right = solveRightMatrix(right);
 
+        // lijevo i desno su matrice
         if(matrixMap.containsKey(left) && matrixMap.containsKey(right)){
 
             matrixMap.replace(left, matrixMap.get(right).copy());
 
             matrixMap.get(left).printMatrix();
 
+        // lijevo je double desno je double varijabla ili broj
         }else if(doubleMap.containsKey(left) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
 
             if(right.matches("[0-9]+")){
@@ -266,6 +340,7 @@ public class ConsoleParser {
                 System.out.println(left + " = " + doubleMap.get(left));
             }
 
+        // lijevo je element matrice desno je double varijabla ili broj
         }else if(left.contains("[") && matrixMap.containsKey(left.substring(0, left.indexOf("["))) && (doubleMap.containsKey(right) || right.matches("[0-9]+"))){
 
             IMatrix l = matrixMap.get(left.substring(0, left.indexOf("[")));
@@ -283,6 +358,7 @@ public class ConsoleParser {
 
             System.out.println(left + " = " + l.getElement(i, j));
 
+        // inace linija nije tocna
         }else{
 
             System.out.println("Left and right are not the same math types!");
@@ -290,6 +366,11 @@ public class ConsoleParser {
         }
     }
 
+    /**
+     * Metoda kao i kod pridruzivanja sve isto, samo jos zbraja lijevu stranu sa desnom i sprema u lijevu
+     * X += B * C
+     * @param line
+     */
     private void sumAssociate(String line){
         String left = line.split(" [+]= ")[0];
         String right = line.split(" [+]= ")[1];
@@ -350,6 +431,11 @@ public class ConsoleParser {
         }
     }
 
+    /**
+     * Metoda za parsiranje oduzimanja od lijeve strane i spremanje u lijevu
+     * X -= B - A
+     * @param line
+     */
     private void subAssociate(String line){
         String left = line.split(" [-]= ")[0];
         String right = line.split(" [-]= ")[1];
@@ -410,6 +496,12 @@ public class ConsoleParser {
         }
     }
 
+    /**
+     * Metoda parsira provjeru lijeve i desne strane jednakosti
+     * x == 5
+     * A == B
+     * @param line
+     */
     private void isEquals(String line){
         String left = line.split(" == ")[0];
         String right = line.split(" == ")[1];
@@ -461,11 +553,17 @@ public class ConsoleParser {
         }
     }
 
+    /**
+     * Metoda parsira desnu stranu jednakosti, ako smo prije utvrdili da je rjesenje desne strane matrica
+     * @param right
+     * @return
+     */
     private String solveRightMatrix(String right){
+        // desno je samo jedna varijabla, zavrsi parsiranje
         if(right.split(" ").length == 1){
-            if(right.contains("[")){
-                int i = Integer.parseInt(right.substring(right.indexOf("[")+1, right.indexOf("]")));
-                int j = Integer.parseInt(right.substring(right.lastIndexOf("[")+1, right.lastIndexOf("]")));
+            if(right.contains("[")) {
+                int i = Integer.parseInt(right.substring(right.indexOf("[") + 1, right.indexOf("]")));
+                int j = Integer.parseInt(right.substring(right.lastIndexOf("[") + 1, right.lastIndexOf("]")));
 
                 double t = matrixMap.get(right.substring(0, right.indexOf("["))).getElement(i, j);
 
@@ -473,22 +571,47 @@ public class ConsoleParser {
                 doubleMap.put(fakeVariable + fakerCounter, t);
 
                 return right.replace(right, fakeVariable + fakerCounter);
+
+            }else if(right.contains("inv()")) {
+                String name = right.substring(0, right.indexOf("."));
+                IMatrix inv = matrixMap.get(name).inv();
+
+                this.fakerCounter = fakerCounter + 1;
+                String fake = "" + fakeVariable + fakerCounter;
+                matrixMap.put(fake, inv);
+
+                return fake;
+            }else if(right.contains("~")){
+                String r = solveRightMatrix(expression(right));
+                return r;
             }else {
                 String r = right;
                 return r;
             }
+        // desna strana ima zagrade, rijesi prvo sve izraze sa zagradama rekurzivno pozivajuci ezpression(izraz zagrade)
+        // mjenjajuci izraz zagrade sa varijablom koja predstavlja njeno rjesenje
         }else if(right.contains("(")){
             String brackets = right.substring(right.indexOf("(")+1, right.indexOf(")"));
             String solvedBrackets = expression(brackets);
 
             String r = solveRightMatrix(right.replace("(" + brackets + ")", solvedBrackets));
             return r;
+        // nema zagrada, nije jedna varijabla, znaci komplezan izraz je na desnoj strani
+        // x + 5 - 3 * 1 / 10
         }else{
             String r = solveRightMatrix(expression(right));
             return r;
         }
     }
 
+    /**
+     * Metoda za rjesavanje lijeve strane izraza
+     * ako je lijevo double x - stvara novu varijablu x tipa double
+     * ako je samo ime varijable, ako je nepoznata stvara novu matricu pod tim imenom
+     * ako je poznata vrijdenost racuna sa varijablom koju to ime predstavlja
+     * @param left
+     * @return
+     */
     private String solveLeftMatrix(String left){
         String[] l = left.split(" ");
 
@@ -513,16 +636,29 @@ public class ConsoleParser {
 
     }
 
+    /**
+     * Metoda za rekurzivno rjesavanje komplexnog racunskog izraza
+     * 10 - 5 * 10 / 9 + 9
+     * Prvo rjesava mnozenje i djeljenje zatim + i -
+     * Radi tako da izdvaja varijablu sa lijeve strane znaka, i desne te znak, i pozove metodu calculate
+     * te joj rpedaje te dvije varijable i znak operacije
+     * @param exp
+     * @return
+     */
     private String expression(String exp){
-        if(exp.split(" ").length == 1){
+        if(exp.split(" ").length == 1 && !exp.contains("~")){
             return exp;
         }else if(exp.contains("~")){
             String variable = exp.substring(exp.indexOf("~")-1, exp.indexOf("~"));
 
             IMatrix m = this.matrixMap.get(variable);
-            this.matrixMap.replace(variable, m, m.transpose());
 
-            String ret = exp.replaceFirst(variable+"~", variable);
+            fakerCounter = fakerCounter + 1;
+            String fake = "" + fakeVariable + fakerCounter;
+
+            this.matrixMap.put(fake, m.transpose());
+
+            String ret = expression(exp.replaceFirst(variable + "~", fake));
 
             return expression(ret);
 
@@ -593,6 +729,14 @@ public class ConsoleParser {
         }
     }
 
+    /**
+     * Metoda racuna rezultat zadane dvije varijable i operatora izmedu njih
+     * rezultat sprema u pripadnu mapu kao fake varijablu
+     * @param first - String prva varijabla
+     * @param second - String druga varijabla
+     * @param operation - String operator
+     * @param fakerCounter - broj lazne varijable
+     */
     private void calculate(String first, String second, String operation, int fakerCounter){
 
         IMatrix firstMatrix = null;
@@ -684,6 +828,11 @@ public class ConsoleParser {
 
     }
 
+    /**
+     * Metoda parsira izraz za stvarnaje prazne matrice
+     * A
+     * @param line
+     */
     private void createEmptyMatrix(String line){
         if(!matrixMap.containsKey(line) && !doubleMap.containsKey(line)) {
             this.matrixMap.put(line, new Matrix());
@@ -699,13 +848,19 @@ public class ConsoleParser {
         }
     }
 
+    /**
+     *  Metoda parsira izraz za citanje matrice iz datoteke\
+     *  usage: A(A.txt)
+     * @param line
+     * @throws FileNotFoundException
+     */
     private void readMatrix(String line) throws FileNotFoundException {
-        if(!line.matches("^[a-zA-Z]+[(][\"][a-zA-Z]+[.]txt[\"][)]$")){
+        if(!line.matches("^[a-zA-Z]+[(][a-zA-Z]+[0-9]*[.]txt[)]$")){
             System.out.println("Unknown command for read matrix!");
             return;
         }
         String name = line.substring(0, line.indexOf('('));
-        String file = line.substring(line.indexOf("\"")+1, line.lastIndexOf("\""));
+        String file = line.substring(line.indexOf("(")+1, line.lastIndexOf(")"));
 
         IMatrix m = MatrixFile.readMatrix(dekstopPath + file);
 
@@ -715,6 +870,9 @@ public class ConsoleParser {
 
     }
 
+    /**
+     * Exit
+     */
     private void exit(){
         System.out.println("Goodbye");
         System.exit(1);

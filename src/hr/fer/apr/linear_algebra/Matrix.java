@@ -1,25 +1,50 @@
 package hr.fer.apr.linear_algebra;
 
+/**
+ * Model matrice
+ * sadrzi broj redaka, broj stupaca i double polje elemenata matrice
+ * nasljeduje apstraktan razred MathMat koji sadrzi operacije racunanja sa matricama
+ */
+
 public class Matrix  extends MathMat{
 	
 	private int rows;
 	private int cols;
 	private double[][] elements;
-	
+
+	/**
+	 * Prazan konstruktor
+	 */
 	public Matrix() {
 		super();
+		this.rows = 0;
+		this.cols = 0;
+		this.elements = new double[0][0];
 	}
-	
-	
 
+	/**
+	 * Konstruktor radi matricu popunjenu nulama zadane velicine
+	 * @param rows
+	 * @param cols
+	 */
 	public Matrix(int rows, int cols) {
 		super();
 		this.rows = rows;
 		this.cols = cols;
+		this.elements = new double[rows][cols];
+		for(int i=0; i<rows; i++){
+			for(int j=0; j<cols; j++){
+				this.elements[i][j] = 0.0;
+			}
+		}
 	}
 
-
-
+	/**
+	 * Konstruktor stvara novu matricu zadane velicine i sa zadanim elementima
+	 * @param rows
+	 * @param cols
+	 * @param elements
+	 */
 	public Matrix(int rows, int cols, double[][] elements) {
 		super();
 		this.rows = rows;
@@ -64,7 +89,11 @@ public class Matrix  extends MathMat{
 			this.elements[row][col] = element;
 		}
 	}
-	
+
+	/**
+	 * Stvara kopiju ove matrice
+	 * @return Matrix
+	 */
 	public IMatrix copy(){
 		double[][] copyElements = new double[this.rows][this.cols];
 		for(int i=0; i<this.rows; i++){

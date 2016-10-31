@@ -1,37 +1,42 @@
 package hr.fer.apr.linear_algebra;
 
+/**
+ * Sucelje metoda za operacije sa matricama te lu, lup dekompozicije i substitucije unaprijed i unatrag
+ */
+
 public interface IMatrix {
 	
-	public int getRowsCount();
-	public void setRowsCount(int rows);
-	public int getColsCount();
-	public void setColsCount(int cols);
-	public double[][] getElements();
-	public void setElements(double[][] elements);
-	public double getElement(int row, int col);	
-	public void setElement(int row, int col, double element);
-	public IMatrix copy();
-	public void printMatrix();
-	public void setMatrix(IMatrix matrix);
+	int getRowsCount();
+	void setRowsCount(int rows);
+	int getColsCount();
+	void setColsCount(int cols);
+	double[][] getElements();
+	void setElements(double[][] elements);
+	double getElement(int row, int col);
+	void setElement(int row, int col, double element);
+	IMatrix copy();
+	void printMatrix();
+	void setMatrix(IMatrix matrix);
 	
-	public IMatrix transpose();
+	IMatrix transpose();
 	
-	public IMatrix sum(IMatrix matrix);
-	public IMatrix nSum(IMatrix matrix);
+	IMatrix sum(IMatrix matrix);
+	IMatrix nSum(IMatrix matrix);
 	
-	public IMatrix sub(IMatrix matrix);
-	public IMatrix nSub(IMatrix matrix);
+	IMatrix sub(IMatrix matrix);
+	IMatrix nSub(IMatrix matrix);
 	
-	public IMatrix mul(IMatrix matrix);
+	IMatrix mul(IMatrix matrix);
 
-	public IMatrix scalarMul(double value);
-	public IMatrix nScalarMul(double value);
+	IMatrix scalarMul(double value);
+	IMatrix nScalarMul(double value);
 
-	public void changeRows(int[] P);
+	void changeRows(int[] P);
 
-	public boolean LU();
-	public IMatrix SF(IMatrix L, int[] P, boolean indexing);
-	public IMatrix SB(IMatrix U);
-	public int[] LUP();
+	boolean LU();
+	IMatrix SF(IMatrix L, int[] P, boolean indexing);
+	IMatrix SB(IMatrix U);
+	int[] LUP();
+	IMatrix inv();
 
 }
