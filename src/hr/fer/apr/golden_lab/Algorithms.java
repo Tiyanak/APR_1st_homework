@@ -39,6 +39,9 @@ public class Algorithms {
 
     public double[] golden_cut(double[] a, double[] b) {
 
+        System.out.println("ZLATNI REZ");
+        System.out.println("a\t\tb\t\tc\t\td");
+
         double[] c = new double[a.length];
         double[] d = new double[a.length];
 
@@ -52,6 +55,19 @@ public class Algorithms {
 
         int i = 0;
         while (distance(a, b) > this.e) {
+            String as = "";
+            String bs = "";
+            String cs = "";
+            String ds = "";
+            for(int k=0; k<a.length; k++){
+                as += a[k] + ",";
+                bs += b[k] + ",";
+                cs += c[k] + ",";
+                ds += d[k] + ",";
+            }
+            System.out.println(as + "\t" + cs + "\t" + ds + "\t" + bs);
+
+
             if (fc < fd) {
                 b = d.clone();
                 d = c.clone();
@@ -70,18 +86,6 @@ public class Algorithms {
                 fd = f.execute(d);
             }
 
-            System.out.println("a\tb\tc\td");
-            String as = "";
-            String bs = "";
-            String cs = "";
-            String ds = "";
-            for(int k=0; k<a.length; k++){
-                as += a[k] + ",";
-                bs += b[k];
-                cs += c[k];
-                ds += d[k];
-            }
-            System.out.println(as + "\t" + cs + "\t" + ds + "\t" + bs);
         }
 
         double[] ret = new double[a.length];
@@ -89,11 +93,23 @@ public class Algorithms {
             ret[j] = (a[j] + b[j]) / 2.0;
         }
 
+        String as = "", bs = "", cs = "", ds = "";
+        for(int k=0; k<a.length; k++){
+            as += a[k] + ",";
+            bs += b[k] + ",";
+            cs += c[k] + ",";
+            ds += d[k] + ",";
+        }
+        System.out.println(as + "\t" + cs + "\t" + ds + "\t" + bs);
+
         return ret;
 
     }
 
     public void unimodalni(double[] tocka) {
+
+        System.out.println("UNIMODALNI");
+        System.out.println("l:\t\tr:");
 
         for (int i = 0; i < l.length; i++) {
             this.l[i] = 0.0;
@@ -120,6 +136,8 @@ public class Algorithms {
         } else if (fm > fr) {
 
             do {
+                System.out.println(this.l[0] + "\t" + this.r[0]);
+
                 this.l = m.clone();
                 m = this.r.clone();
                 fm = fr;
@@ -132,6 +150,8 @@ public class Algorithms {
         } else {
 
             do {
+                System.out.println(this.l[0] + "\t" + this.r[0]);
+
                 this.r = m.clone();
                 m = this.l.clone();
                 fm = fl;
@@ -142,13 +162,23 @@ public class Algorithms {
             } while (fm > fl);
         }
 
+        System.out.println(this.l[0] + "\t" + this.r[0]);
+
     }
 
     public double[] koordinatni(double[] X0){
+
+        System.out.println("KOORDINATNI");
+
         double[] x = X0.clone();
 
         double[] xs = x.clone();
         do{
+            String xString = "";
+            for(double d: x){
+                xString += d + ", ";
+            }
+            System.out.println("x: " + xString);
             xs = x.clone();
             for (int i=0; i<xs.length; i++){
                 unimodalni(new double[]{xs[i]});
@@ -157,10 +187,20 @@ public class Algorithms {
             }
         }while (distance(x, xs) > e);
 
+        String xString = "";
+        for(double d: x){
+            xString += d + ", ";
+        }
+        System.out.println("x: " + xString);
+
+
         return x;
     }
 
     public double[] simplex(double[] X0) {
+
+        System.out.println("SIMPLEX");
+        System.out.println("Xc\t\tXr\t\tXe\t\tXk");
 
         double[][] X = new double[X0.length + 1][X0.length];
 
@@ -171,6 +211,10 @@ public class Algorithms {
         }
 
         double[] Xc = new double[X0.length];
+        double[] Xk = new double[X0.length];
+        double[] Xe = new double[X0.length];
+        double[] Xr = new double[X0.length];
+
         int h = 0;
         int l = 0;
 
@@ -181,17 +225,15 @@ public class Algorithms {
 
             Xc = centroid(X, h);
 
-            double[] Xr = new double[X0.length];
-            Xr = refleksija(X, Xc, h);
+            Xr = refleksija(X, Xc, h).clone();
 
             if (f.execute(Xr) < f.execute(X[l])) {
-                double[] Xe = new double[X0.length];
-                Xe = ekspancija(Xc, Xr);
+                Xe = ekspancija(Xc, Xr).clone();
 
                 if (f.execute(Xe) < f.execute(X[h])) {
-                    X[h] = Xe;
+                    X[h] = Xe.clone();
                 } else {
-                    X[h] = Xr;
+                    X[h] = Xr.clone();
                 }
 
             } else {
@@ -200,24 +242,42 @@ public class Algorithms {
                 // j = 0..n, j != h
                 if ( isBigger(Xr, X, h)) {
                     if (f.execute(Xr) < f.execute(X[h])) {
-                        X[h] = Xr;
+                        X[h] = Xr.clone();
                     }
 
-                    double[] Xk = new double[X0.length];
-                    Xk = kontrakcija(Xc, X, h);
+                    Xk = kontrakcija(Xc, X, h).clone();
 
                     if (f.execute(Xk) < f.execute(X[h])) {
                         X[h] = Xk;
                     } else {
-                        X = pomakPremaXl(X, l);
+                        X = pomakPremaXl(X, l).clone();
                     }
 
                 } else {
-                    X[h] = Xr;
+                    X[h] = Xr.clone();
                 }
 
             }
+
+            String qc = "", qr = "", qe = "", qk = "";
+            for(int q=0; q<Xc.length; q++){
+                qc += Xc[q] + ",";
+                qe += Xe[q] + ",";
+                qr += Xr[q] + ",";
+                qk += Xk[q] + ",";
+            }
+            System.out.println(qc + "\t" + qr + "\t" + qe + "\t" + qk);
+
         } while (uvjet(X, Xc, h));
+
+        String qc = "", qr = "", qe = "", qk = "";
+        for(int q=0; q<Xc.length; q++){
+            qc += Xc[q] + ",";
+            qe += Xe[q] + ",";
+            qr += Xr[q] + ",";
+            qk += Xk[q] + ",";
+        }
+        System.out.println(qc + "\t" + qr + "\t" + qe + "\t" + qk);
 
         return Xc;
 
@@ -225,11 +285,24 @@ public class Algorithms {
 
     public double[] hookeJeves(double[] X0) {
 
+        System.out.println("HOOKE-JEVES");
+        System.out.println("XB\t\tXP\t\tXN");
+
         double[] Xp = X0.clone(), Xb = X0.clone();
+        double[] Xn = new double[Xp.length];
         double Dx = 1.0;
 
         do {
-            double[] Xn = istrazi(Xp, Dx);
+            Xn = istrazi(Xp, Dx).clone();
+
+            String qn = "", qb = "", qp = "";
+            for(int q=0; q<Xp.length; q++){
+                qn += Xn[q] + ",";
+                qb += Xb[q] + ",";
+                qp += Xp[q] + ",";
+
+            }
+            System.out.println(qb + "\t" + qp + "\t" + qn);
 
             if (f.execute(Xn) < f.execute(Xb)) {
                 for (int i = 0; i < Xp.length; i++) {
@@ -241,6 +314,15 @@ public class Algorithms {
                 Xp = Xb.clone();
             }
         } while (Dx > e); // dok nije zadovoljen uvjet
+
+        String qn = "", qb = "", qp = "";
+        for(int q=0; q<Xp.length; q++){
+            qn += Xn[q] + ",";
+            qb += Xb[q] + ",";
+            qp += Xp[q] + ",";
+
+        }
+        System.out.println(qb + "\t" + qp + "\t" + qn);
 
         return Xb;
 

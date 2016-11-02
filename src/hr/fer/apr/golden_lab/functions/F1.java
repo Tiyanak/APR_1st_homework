@@ -6,6 +6,7 @@ package hr.fer.apr.golden_lab.functions;
 public class F1 extends IFunctions{
 
     public F1() {
+        this.putNewF("f1");
     }
 
     public double f1(double[] x){
@@ -19,6 +20,7 @@ public class F1 extends IFunctions{
 
     @Override
     public double execute(double[] x) {
+        this.count("f1");
         return f1(x);
     }
 }

@@ -56,15 +56,31 @@ public class Main {
             } else if (line.contains("sigma = ")) {
                 a.setSigma(Double.parseDouble(line.substring(8)));
             } else if (line.contains("golden")) {
-                String aS = line.substring(line.indexOf("(") + 1, line.indexOf(","));
-                String bS = line.substring(line.indexOf(" ") + 1, line.indexOf(")"));
-                double[] ad = ReadXsFromFile.readOneSpot(PATH + aS);
-                double[] bd = ReadXsFromFile.readOneSpot(PATH + bS);
 
-                double[] res = a.golden_cut(ad, bd);
+                String params = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 
-                for (double d : res) {
-                    System.out.println(d + " ");
+                if (params.split(", ").length == 2) {
+
+                    String aS = line.substring(line.indexOf("(") + 1, line.indexOf(","));
+                    String bS = line.substring(line.indexOf(" ") + 1, line.indexOf(")"));
+                    double[] ad = ReadXsFromFile.readOneSpot(PATH + aS);
+                    double[] bd = ReadXsFromFile.readOneSpot(PATH + bS);
+
+                    double[] res = a.golden_cut(ad, bd);
+
+                    for (double d : res) {
+                        System.out.println(d + " ");
+                    }
+                } else if (params.split(", ").length == 1) {
+
+                    double[] tocka = new double[]{Double.parseDouble(params)};
+                    a.unimodalni(tocka);
+                    double[] rez = a.golden_cut(a.getL(), a.getR());
+
+                    for (double d : rez) {
+                        System.out.print(d + " ");
+                    }
+
                 }
             } else if (line.contains("unimodalni")) {
                 String aS = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
@@ -107,8 +123,17 @@ public class Main {
                     System.out.println(d + ", ");
                 }
 
-            } else {
-                // Do nothing
+            } else if (line.contains("print(")) {
+                String params = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
+
+                if (params.isEmpty()) {
+                    a.getF().printCounter();
+                } else {
+                    a.getF().printCounter(params);
+                }
+
+            } else if(line.contains("resetC")){
+                a.getF().resetCounter();
             }
 
         }

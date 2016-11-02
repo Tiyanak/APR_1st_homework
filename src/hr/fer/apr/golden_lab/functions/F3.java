@@ -6,12 +6,13 @@ package hr.fer.apr.golden_lab.functions;
 public class F3 extends IFunctions{
 
     public F3() {
+        this.putNewF("f3");
     }
 
     public double f3(double[] x){
         double sum = 0.0;
         for(int i=0; i<x.length; i++){
-            sum = sum + (x[i] - i) * (x[i] - i);
+            sum = sum + (x[i] - i * 3) * (x[i] - i * 3);
         }
 
         return sum;
@@ -24,6 +25,7 @@ public class F3 extends IFunctions{
 
     @Override
     public double execute(double[] x) {
+        this.count("f3");
         return f3(x);
     }
 }
