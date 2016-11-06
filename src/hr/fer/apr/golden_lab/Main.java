@@ -66,14 +66,19 @@ public class Main {
                     double[] ad = ReadXsFromFile.readOneSpot(PATH + aS);
                     double[] bd = ReadXsFromFile.readOneSpot(PATH + bS);
 
+                    a.getF().resetCounter();
                     double[] res = a.golden_cut(ad, bd);
 
                     for (double d : res) {
-                        System.out.println(d + " ");
+                        System.out.print(d + " ");
                     }
+
+                    System.out.println("F(x) = " + a.getF().execute(res));
+
                 } else if (params.split(", ").length == 1) {
 
                     double[] tocka = new double[]{Double.parseDouble(params)};
+                    a.getF().resetCounter();
                     a.unimodalni(tocka);
                     double[] rez = a.golden_cut(a.getL(), a.getR());
 
@@ -81,47 +86,59 @@ public class Main {
                         System.out.print(d + " ");
                     }
 
+                    System.out.println("F(x) = " + a.getF().execute(rez));
+
                 }
             } else if (line.contains("unimodalni")) {
                 String aS = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
                 double[] value = new double[]{Double.parseDouble(aS)};
 
+                a.getF().resetCounter();
                 a.unimodalni(value);
 
-                System.out.println("(" + a.getL()[0] + ", " + a.getR()[0] + ")");
+                System.out.print("(" + a.getL()[0] + ", " + a.getR()[0] + ")");
 
             } else if (line.contains("simplex")) {
 
                 String aS = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
                 double[] value = ReadXsFromFile.readOneSpot(PATH + aS);
 
+                a.getF().resetCounter();
                 value = a.simplex(value);
 
                 for (double d : value) {
-                    System.out.println(d + ", ");
+                    System.out.print(d + ", ");
                 }
+
+                System.out.println("F(x) = " + a.getF().execute(value));
 
             } else if (line.contains("hooke")) {
 
                 String aS = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
                 double[] value = ReadXsFromFile.readOneSpot(PATH + aS);
 
+                a.getF().resetCounter();
                 value = a.hookeJeves(value);
 
                 for (double d : value) {
-                    System.out.println(d + ", ");
+                    System.out.print(d + ", ");
                 }
+
+                System.out.println("F(x) = " + a.getF().execute(value));
 
             } else if (line.contains("koord")) {
 
                 String aS = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
                 double[] value = ReadXsFromFile.readOneSpot(PATH + aS);
 
+                a.getF().resetCounter();
                 value = a.koordinatni(value);
 
                 for (double d : value) {
-                    System.out.println(d + ", ");
+                    System.out.print(d + ", ");
                 }
+
+                System.out.println("F(x) = " + a.getF().execute(value));
 
             } else if (line.contains("print(")) {
                 String params = line.substring(line.indexOf("(") + 1, line.indexOf(")"));

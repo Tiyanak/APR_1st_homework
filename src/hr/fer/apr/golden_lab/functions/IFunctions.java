@@ -55,4 +55,6 @@ public abstract class IFunctions {
 
     public abstract double execute(double[] x);
 
+    public abstract double execute(double lamda, double[] v, double[] x);
+
 }
