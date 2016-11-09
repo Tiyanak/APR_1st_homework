@@ -149,7 +149,7 @@ public class Main {
                     a.getF().printCounter(params);
                 }
 
-            } else if(line.contains("resetC")){
+            } else if(line.contains("reset")){
                 a.getF().resetCounter();
             }
 

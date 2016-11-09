@@ -20,7 +20,7 @@ public class F1 extends IFunctions {
     }
 
     public double f1(double lambda, double[] v, double[] x) {
-        return 100 * (Math.pow(x[1] + lambda * v[1] - Math.pow(x[0] + lambda * v[0], 2), 2)) + (1 - Math.pow(x[0] + lambda * v[0], 2));
+        return 100 * (Math.pow(x[1] + lambda * v[1] - Math.pow(x[0] + lambda * v[0], 2), 2)) + Math.pow(1 - (x[0] + lambda * v[0]), 2);
     }
 
     @Override

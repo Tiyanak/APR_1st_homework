@@ -59,7 +59,7 @@ public class Algorithms {
             String bs = "";
             String cs = "";
             String ds = "";
-            for(int k=0; k<a.length; k++){
+            for (int k = 0; k < a.length; k++) {
                 as += a[k] + ",";
                 bs += b[k] + ",";
                 cs += c[k] + ",";
@@ -94,7 +94,7 @@ public class Algorithms {
         }
 
         String as = "", bs = "", cs = "", ds = "";
-        for(int k=0; k<a.length; k++){
+        for (int k = 0; k < a.length; k++) {
             as += a[k] + ",";
             bs += b[k] + ",";
             cs += c[k] + ",";
@@ -168,8 +168,6 @@ public class Algorithms {
 
     public double[] golden_cut(double[] a, double[] b, double[] v, double[] tocka) {
 
-        System.out.println("ZLATNI REZ");
-        System.out.println("a\t\tb\t\tc\t\td");
 
         double[] c = new double[a.length];
         double[] d = new double[a.length];
@@ -188,13 +186,12 @@ public class Algorithms {
             String bs = "";
             String cs = "";
             String ds = "";
-            for(int k=0; k<a.length; k++){
+            for (int k = 0; k < a.length; k++) {
                 as += a[k] + ",";
                 bs += b[k] + ",";
                 cs += c[k] + ",";
                 ds += d[k] + ",";
             }
-            System.out.println(as + "\t" + cs + "\t" + ds + "\t" + bs);
 
 
             if (fc < fd) {
@@ -222,14 +219,6 @@ public class Algorithms {
             ret[j] = (a[j] + b[j]) / 2.0;
         }
 
-        String as = "", bs = "", cs = "", ds = "";
-        for(int k=0; k<a.length; k++){
-            as += a[k] + ",";
-            bs += b[k] + ",";
-            cs += c[k] + ",";
-            ds += d[k] + ",";
-        }
-        System.out.println(as + "\t" + cs + "\t" + ds + "\t" + bs);
 
         return ret;
 
@@ -238,8 +227,6 @@ public class Algorithms {
 
     public void unimodalni(double lamda, double[] v, double[] tocka) {
 
-        System.out.println("UNIMODALNI");
-        System.out.println("l:\t\tr:");
 
         for (int i = 0; i < l.length; i++) {
             this.l[i] = 0.0;
@@ -264,7 +251,6 @@ public class Algorithms {
         } else if (fm > fr) {
 
             do {
-                System.out.println(this.l[0] + "\t" + this.r[0]);
 
                 this.l[0] = m;
                 m = this.r[0];
@@ -276,7 +262,6 @@ public class Algorithms {
         } else {
 
             do {
-                System.out.println(this.l[0] + "\t" + this.r[0]);
 
                 this.r[0] = m;
                 m = this.l[0];
@@ -286,44 +271,42 @@ public class Algorithms {
             } while (fm > fl);
         }
 
-        System.out.println(this.l[0] + "\t" + this.r[0]);
 
     }
 
 
-    public double[] koordinatni(double[] X0){
+    public double[] koordinatni(double[] X0) {
 
-        System.out.println("KOORDINATNI");
 
         double[] x = X0.clone();
         double[] v = new double[X0.length];
 
-        for(int i=0; i<v.length; i++){
+        for (int i = 0; i < v.length; i++) {
             v[i] = 0.0;
         }
 
+        double dist = 0.0;
         double[] xs = x.clone();
-        do{
+        do {
             String xString = "";
-            for(double d: x){
+            for (double d : x) {
                 xString += d + ", ";
             }
-            System.out.println("x: " + xString);
             xs = x.clone();
-            for (int i=0; i<xs.length; i++){
+            for (int i = 0; i < xs.length; i++) {
                 v[i] = 1.0;
-                unimodalni(xs[i], v, xs);
-                double[] lam = golden_cut(this.l.clone(), this.r.clone(), v, xs);
+                this.unimodalni(x[i], v, xs);
+                double[] lam = golden_cut(this.l.clone(), this.r.clone(), v.clone(), x.clone());
                 x[i] = x[i] + lam[0] * v[i];
                 v[i] = 0.0;
             }
-        }while (distance(x, xs) > e);
+            dist = distance(x, xs);
+            } while (dist > e);
 
         String xString = "";
-        for(double d: x){
+        for (double d : x) {
             xString += d + ", ";
         }
-        System.out.println("x: " + xString);
 
         return x;
     }
@@ -371,7 +354,7 @@ public class Algorithms {
 
                 int j = 0;
                 // j = 0..n, j != h
-                if ( isBigger(Xr, X, h)) {
+                if (isBigger(Xr, X, h)) {
                     if (f.execute(Xr) < f.execute(X[h])) {
                         X[h] = Xr.clone();
                     }
@@ -391,7 +374,7 @@ public class Algorithms {
             }
 
             String qc = "", qr = "", qe = "", qk = "";
-            for(int q=0; q<Xc.length; q++){
+            for (int q = 0; q < Xc.length; q++) {
                 qc += Xc[q] + ",";
                 qe += Xe[q] + ",";
                 qr += Xr[q] + ",";
@@ -402,7 +385,7 @@ public class Algorithms {
         } while (uvjet(X, Xc, h));
 
         String qc = "", qr = "", qe = "", qk = "";
-        for(int q=0; q<Xc.length; q++){
+        for (int q = 0; q < Xc.length; q++) {
             qc += Xc[q] + ",";
             qe += Xe[q] + ",";
             qr += Xr[q] + ",";
@@ -427,7 +410,7 @@ public class Algorithms {
             Xn = istrazi(Xp.clone(), Dx).clone();
 
             String qn = "", qb = "", qp = "";
-            for(int q=0; q<Xp.length; q++){
+            for (int q = 0; q < Xp.length; q++) {
                 qn += Xn[q] + ",";
                 qb += Xb[q] + ",";
                 qp += Xp[q] + ",";
@@ -447,7 +430,7 @@ public class Algorithms {
         } while (Dx > e); // dok nije zadovoljen uvjet
 
         String qn = "", qb = "", qp = "";
-        for(int q=0; q<Xp.length; q++){
+        for (int q = 0; q < Xp.length; q++) {
             qn += Xn[q] + ",";
             qb += Xb[q] + ",";
             qp += Xp[q] + ",";
@@ -533,35 +516,35 @@ public class Algorithms {
                     c[i] += x[j][i];
                 }
             }
-            c[i] /= x.length-1;
+            c[i] /= x.length - 1;
         }
 
         return c;
     }
 
-    private double[] refleksija(double[][] x, double[] xc, int h){
+    private double[] refleksija(double[][] x, double[] xc, int h) {
         double[] xr = new double[xc.length];
-        for(int i=0; i<xc.length; i++){
-            xr[i] = (1+alfa) * xc[i] - alfa * x[h][i];
+        for (int i = 0; i < xc.length; i++) {
+            xr[i] = (1 + alfa) * xc[i] - alfa * x[h][i];
         }
 
         return xr;
     }
 
-    private double[] ekspancija(double[] xc, double[] xr){
+    private double[] ekspancija(double[] xc, double[] xr) {
         double[] xe = new double[xc.length];
 
-        for (int i=0; i<xe.length; i++){
+        for (int i = 0; i < xe.length; i++) {
             xe[i] = (1 - gama) * xc[i] + gama * xr[i];
         }
 
         return xe;
     }
 
-    private boolean isBigger(double[] xr, double[][] x, int h){
+    private boolean isBigger(double[] xr, double[][] x, int h) {
 
-        for(int i=0; i<x.length; i++){
-            if(i != h) {
+        for (int i = 0; i < x.length; i++) {
+            if (i != h) {
                 if (f.execute(xr) < f.execute(x[i])) {
                     return false;
                 }
@@ -571,21 +554,21 @@ public class Algorithms {
         return true;
     }
 
-    private double[] kontrakcija(double[] xc, double[][] x, int h){
+    private double[] kontrakcija(double[] xc, double[][] x, int h) {
         double[] xk = new double[xc.length];
 
-        for(int i=0; i<xc.length; i++){
-            xk[i] = (1-beta) * xc[i] + beta * x[h][i];
+        for (int i = 0; i < xc.length; i++) {
+            xk[i] = (1 - beta) * xc[i] + beta * x[h][i];
         }
 
         return xk;
     }
 
-    private double[][] pomakPremaXl(double[][] x, int l){
+    private double[][] pomakPremaXl(double[][] x, int l) {
         double[] xl = x[l].clone();
 
-        for (int i=0; i<x.length; i++){
-            for (int j=0; j<x[0].length; j++){
+        for (int i = 0; i < x.length; i++) {
+            for (int j = 0; j < x[0].length; j++) {
                 x[i][j] = (x[i][j] + xl[j]) * sigma;
             }
         }
@@ -593,11 +576,9 @@ public class Algorithms {
         return x;
     }
 
-    private boolean uvjet(double[][] x, double[] xc, int h){
-        for (int i=0; i<x.length; i++){
-           if(distance(x[h], xc) > e){
-                return true;
-           }
+    private boolean uvjet(double[][] x, double[] xc, int h) {
+        if (distance(x[h], xc) > e) {
+            return true;
         }
 
         return false;
