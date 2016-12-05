@@ -756,7 +756,7 @@ public class Algorithms {
                 counter++;
             }
 
-        } while (norm(v) > e || counter < 100);
+        } while (norm(v) > e && counter < 100);
 
         return ret;
 
@@ -814,7 +814,7 @@ public class Algorithms {
                 counter++;
             }
 
-        } while (norm(v) > e || counter < 100);
+        } while (norm(v) > e && counter < 100);
 
         return ret;
 
@@ -1070,7 +1070,7 @@ public class Algorithms {
 
             this.t += 10;
 
-        }while(distance(x, xs) > e || counter < 100);
+        }while(distance(x, xs) > e && counter < 100);
 
         this.t = 1;
 
@@ -1078,7 +1078,7 @@ public class Algorithms {
 
     }
 
-    private double[] provjeriogr(double[] x, int[] gs){
+   public double[] provjeriogr(double[] x, int[] gs){
 
         boolean zad = true;
         for(int i=0; i<gs.length; i++){

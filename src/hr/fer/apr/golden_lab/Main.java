@@ -270,6 +270,138 @@ public class Main {
                 }
 
                 System.out.println("F(x) = " + a.getF().execute(value));
+            }else if(line.contains("prvi")){
+
+                a.getF().resetCounter();
+                a.setF(new F3());
+
+                double[] grad3 = a.gradijent(new double[]{0.0, 0.0}, false);
+                double[] grad3opt = a.gradijent(new double[]{0.0, 0.0}, true);
+
+                for (double d : grad3) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("Bez optimizacije: F(x) = " + a.getF().execute(grad3));
+
+                for (double d : grad3opt) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("Uz optimizaciju: F(x) = " + a.getF().execute(grad3opt));
+
+            }else if(line.contains("drugi")){
+
+                a.setF(new F1());
+                a.getF().resetCounter();
+                double[] grad1 = a.gradijent(new double[]{-1.9, 2.0}, true);
+
+                for (double d : grad1) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.print("F(x) = " + a.getF().execute(grad1) + " | Brojac: " );
+                a.getF().printCounter();
+
+                a.getF().resetCounter();
+                double[] nr1 = a.nr(new double[]{-1.9, 2.0}, true);
+
+                for (double d : nr1) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.print("F(x) = " + a.getF().execute(nr1) + " | Brojac: " );
+                a.getF().printCounter();
+
+                a.setF(new F2());
+                a.getF().resetCounter();
+                double[] grad2 = a.gradijent(new double[]{0.1, 0.3}, true);
+
+                for (double d : grad2) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.print("F(x) = " + a.getF().execute(grad2) + " | Brojac: " );
+                a.getF().printCounter();
+
+                a.getF().resetCounter();
+                double[] nr2 = a.nr(new double[]{0.1, 0.3}, true);
+
+                for (double d : nr2) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.print("F(x) = " + a.getF().execute(nr2) + " | Brojac: " );
+                a.getF().printCounter();
+
+            }else if(line.contains("treci")){
+
+                a.setF(new F1());
+                double[] box1 = a.box(new double[]{-1.9, 2.0}, -100, 100, new int[]{0, 1});
+
+                for (double d : box1) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(box1));
+
+                a.setF(new F2());
+                double[] box2 = a.box(new double[]{0.1, 0.3}, -100, 100, new int[]{0, 1});
+
+                for (double d : box2) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(box2));
+
+            }else if(line.contains("cetvrti")){
+
+                a.setF(new F1());
+                double[] tr1 = a.transform(new double[]{-1.9, 2.0}, new int[]{0, 1}, new int[]{});
+
+                for (double d : tr1) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(tr1));
+
+                a.setF(new F2());
+                double[] tr2 = a.transform(new double[]{0.1, 0.3}, new int[]{0, 1}, new int[]{});
+
+                for (double d : tr2) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(tr2));
+
+            }else if(line.contains("peti")){
+
+                a.setF(new F4());
+                double[] tr1 = a.transform(new double[]{0.0, 0.0}, new int[]{2, 3}, new int[]{0});
+
+                for (double d : tr1) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(tr1));
+
+                double[] tr2trazi = a.provjeriogr(new double[]{5.0, 5.0}, new int[]{2, 3});
+
+                System.out.println("Nakon sredivanja tocke u ogranicenja: ");
+                for (double d : tr2trazi) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(tr2trazi));
+
+                double[] tr2 = a.transform(tr2trazi, new int[]{2, 3}, new int[]{0});
+
+                for (double d : tr2) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(tr2));
+
             }
 
         }

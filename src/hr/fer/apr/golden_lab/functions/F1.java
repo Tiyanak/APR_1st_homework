@@ -70,6 +70,8 @@ public class F1 extends IFunctions {
             dervsArray[i] = dervs.get(i);
         }
 
+        this.countgrad("f1");
+
         return dervsArray;
     }
 
@@ -85,6 +87,8 @@ public class F1 extends IFunctions {
                 hesseova[i][j] = hess.get(i).get(j);
             }
         }
+
+        this.counthess("f1");
 
         return hesseova;
     }
