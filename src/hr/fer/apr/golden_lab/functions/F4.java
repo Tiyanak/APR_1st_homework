@@ -1,7 +1,6 @@
 package hr.fer.apr.golden_lab.functions;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Igor Farszky on 30.10.2016..
@@ -16,13 +15,19 @@ public class F4 extends IFunctions {
     }
 
     public double f4(double[] x) {
-        return Math.abs((x[0] - x[1]) * (x[0] + x[1])) + Math.sqrt(x[0] * x[0] + x[1] * x[1]);
+        return Math.pow(x[0]-3, 2) + Math.pow(x[1], 2);
     }
 
     public double f4(double lamda, double[] v, double[] x) {
-        double x1 = x[0] + lamda * v[0];
-        double x2 = x[1] + lamda * v[1];
-        return Math.abs((x1 - x2) * (x1 + x2)) + Math.sqrt(Math.pow(x1, 2) + Math.pow(x2, 2));
+       return Math.pow(x[0]+lamda * v[0] - 3, 2) + Math.pow(x[1] + lamda * v[1], 2);
+    }
+
+    public double f4x1(double[] x){
+        return 2 * (x[0] - 3);
+    }
+
+    public double f4x2(double[] x){
+        return 2 * x[1];
     }
 
     @Override
@@ -46,4 +51,36 @@ public class F4 extends IFunctions {
         this.count("f4");
         return f4(lamda, v, x);
     }
+
+    @Override
+    public double[] d(double[] x) {
+        List<Double> dervs = new ArrayList<>();
+
+        dervs.add(f4x1(x));
+        dervs.add(f4x2(x));
+
+        double[] dervsArray = new double[dervs.size()];
+        for(int i=0; i<dervs.size(); i++){
+            dervsArray[i] = dervs.get(i);
+        }
+
+        return dervsArray;
+    }
+
+    public double[][] H(double[] x) {
+        List<List<Double>> hess = new ArrayList<>();
+
+        hess.add(new ArrayList<Double>(Arrays.asList(2.0, 0.0)));
+        hess.add(new ArrayList<Double>(Arrays.asList(0.0, 2.0)));
+
+        double[][] hesseova = new double[hess.size()][hess.get(0).size()];
+        for (int i = 0; i < hess.size(); i++) {
+            for (int j = 0; j < hess.get(i).size(); j++) {
+                hesseova[i][j] = hess.get(i).get(j);
+            }
+        }
+
+        return hesseova;
+    }
+
 }

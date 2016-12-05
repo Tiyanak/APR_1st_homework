@@ -14,7 +14,7 @@ public class Main {
 
         Algorithms a = new Algorithms();
         Scanner sc = new Scanner(System.in);
-        final String PATH = "C:\\Users\\Igor Farszky\\Desktop\\";
+        final String PATH = "C:\\Users\\Igor\\Desktop\\";
 
         System.out.println("Welcome to my Golden shell");
         System.out.println("You can set functions and constants with: 'e=value, h=value, alfa=value ...'");
@@ -44,8 +44,6 @@ public class Main {
                     a.setF(new F3());
                 } else if (fun.equals("f4")) {
                     a.setF(new F4());
-                } else if (fun.equals("f6")) {
-                    a.setF(new F6());
                 } else if (fun.equals("f0")) {
                     a.setF(new F0());
                 } else {
@@ -63,8 +61,8 @@ public class Main {
 
                     String aS = line.substring(line.indexOf("(") + 1, line.indexOf(","));
                     String bS = line.substring(line.indexOf(" ") + 1, line.indexOf(")"));
-                    double[] ad = ReadXsFromFile.readOneSpot(PATH + aS);
-                    double[] bd = ReadXsFromFile.readOneSpot(PATH + bS);
+                    double[] ad = ReadXsFromFile.readOneSpot(PATH + aS + ".txt");
+                    double[] bd = ReadXsFromFile.readOneSpot(PATH + bS + ".txt");
 
                     a.getF().resetCounter();
                     double[] res = a.golden_cut(ad, bd);
@@ -101,7 +99,7 @@ public class Main {
             } else if (line.contains("simplex")) {
 
                 String aS = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
-                double[] value = ReadXsFromFile.readOneSpot(PATH + aS);
+                double[] value = ReadXsFromFile.readOneSpot(PATH + aS + ".txt");
 
                 a.getF().resetCounter();
                 value = a.simplex(value);
@@ -115,7 +113,7 @@ public class Main {
             } else if (line.contains("hooke")) {
 
                 String aS = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
-                double[] value = ReadXsFromFile.readOneSpot(PATH + aS);
+                double[] value = ReadXsFromFile.readOneSpot(PATH + aS + ".txt");
 
                 a.getF().resetCounter();
                 value = a.hookeJeves(value);
@@ -129,7 +127,7 @@ public class Main {
             } else if (line.contains("koord")) {
 
                 String aS = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
-                double[] value = ReadXsFromFile.readOneSpot(PATH + aS);
+                double[] value = ReadXsFromFile.readOneSpot(PATH + aS + ".txt");
 
                 a.getF().resetCounter();
                 value = a.koordinatni(value);
@@ -151,6 +149,127 @@ public class Main {
 
             } else if(line.contains("reset")){
                 a.getF().resetCounter();
+            }else if(line.contains("gradopt(")){
+
+                String var = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+
+                double[] value = ReadXsFromFile.readOneSpot(PATH + var + ".txt");
+
+                a.getF().resetCounter();
+                value = a.gradijent(value, true);
+
+                for (double d : value) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(value));
+
+            }else if(line.contains("grad(")){
+                String var = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+
+                double[] value = ReadXsFromFile.readOneSpot(PATH + var + ".txt");
+
+                a.getF().resetCounter();
+                value = a.gradijent(value, false);
+
+                for (double d : value) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(value));
+            }else if(line.contains("box(")){
+                String vars = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+
+                String poctocka = vars.split(", ")[0];
+                String expogr = vars.split(", ")[1];
+                String impogr = vars.split(", ")[2];
+
+                double[] poctockavalue = ReadXsFromFile.readOneSpot(PATH + poctocka + ".txt");
+                double[] expogrvalue = ReadXsFromFile.readOneSpot(PATH + expogr + ".txt");
+                double[] impogrvalue = ReadXsFromFile.readOneSpot(PATH + impogr + ".txt");
+
+                int[] imps = new int[impogrvalue.length];
+                for(int i=0; i<imps.length; i++){
+                    imps[i] = (int) impogrvalue[i];
+                }
+
+                double[] value = a.box(poctockavalue, expogrvalue[0], expogrvalue[1], imps);
+
+                for (double d : value) {
+                    System.out.print(d + ", ");
+                }
+
+                if(value[0] != 666.0){
+                    System.out.println("F(x) = " + a.getF().execute(value));
+                }
+
+            }else if(line.contains("trans(")){
+                String vars = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+
+                String poctocka = vars.split(", ")[0];
+                String gs = vars.split(", ")[1];
+                String hs = vars.split(", ")[2];
+
+                double[] poctockavalue = ReadXsFromFile.readOneSpot(PATH + poctocka + ".txt");
+                double[] gv = ReadXsFromFile.readOneSpot(PATH + gs + ".txt");
+                double[] hv = ReadXsFromFile.readOneSpot(PATH + hs + ".txt");
+
+                int[] gints = new int[gv.length];
+                if(gv[0] != 666.0) {
+                    for (int i = 0; i < gints.length; i++) {
+                        gints[i] = (int) gv[i];
+                    }
+                }else{
+                    gints = new int[0];
+                }
+
+                int[] hints = new int[hv.length];
+                if(hv[0] != 666.0) {
+                    for (int i = 0; i < hints.length; i++) {
+                        hints[i] = (int) hv[i];
+                    }
+                }else{
+                    hints = new int[0];
+                }
+
+                double[] value = a.transform(poctockavalue, gints, hints);
+
+                for (double d : value) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(value));
+
+            }else if(line.contains("t =")){
+                a.setT(Double.parseDouble(line.substring(4)));
+            }else if(line.contains("nropt(")){
+
+                String var = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+
+                double[] value = ReadXsFromFile.readOneSpot(PATH + var + ".txt");
+
+                a.getF().resetCounter();
+                value = a.nr(value, true);
+
+                for (double d : value) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(value));
+
+            }else if(line.contains("nr(")) {
+                String var = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
+
+                double[] value = ReadXsFromFile.readOneSpot(PATH + var + ".txt");
+
+                a.getF().resetCounter();
+                value = a.nr(value, false);
+
+                for (double d : value) {
+                    System.out.print(d + ", ");
+                }
+
+                System.out.println("F(x) = " + a.getF().execute(value));
             }
 
         }

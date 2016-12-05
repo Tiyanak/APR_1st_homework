@@ -58,6 +58,7 @@ public class Matrix  extends MathMat{
 
 	public void setRowsCount(int rows) {
 		this.rows = rows;
+		this.elements = new double[this.rows][this.cols];
 	}
 
 	public int getColsCount() {
@@ -66,6 +67,7 @@ public class Matrix  extends MathMat{
 
 	public void setColsCount(int cols) {
 		this.cols = cols;
+		this.elements = new double[this.rows][this.cols];
 	}
 
 	public double[][] getElements() {

@@ -219,7 +219,6 @@ public abstract class MathMat implements IMatrix{
 	 */
 	@Override
 	public IMatrix SB(IMatrix U){
-		U.printMatrix();
 		IMatrix backup = this.copy();
 		for(int i=this.getRowsCount()-1; i>-1; i--){
 			if(Math.abs(U.getElement(i, i)) < 0.000001){

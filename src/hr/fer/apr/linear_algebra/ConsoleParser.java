@@ -31,7 +31,7 @@ public class ConsoleParser {
         this.matrixMap = new HashMap<>();
         this.doubleMap = new HashMap<>();
         this.indexingMap = new HashMap<>();
-        this.dekstopPath = "C:\\Users\\Igor Farszky\\Desktop\\";
+        this.dekstopPath = "C:\\Users\\Igor\\Desktop\\";
         this.fakerCounter = 0;
 
     }

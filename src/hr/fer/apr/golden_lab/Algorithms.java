@@ -1,10 +1,14 @@
 package hr.fer.apr.golden_lab;
 
-import com.sun.org.apache.xml.internal.resolver.readers.XCatalogReader;
 import hr.fer.apr.golden_lab.functions.F1;
 import hr.fer.apr.golden_lab.functions.IFunctions;
+import hr.fer.apr.golden_lab.functions.Limits;
+import hr.fer.apr.linear_algebra.IMatrix;
+import hr.fer.apr.linear_algebra.Matrix;
 
-import java.util.concurrent.Callable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Igor Farszky on 19.10.2016..
@@ -21,6 +25,7 @@ public class Algorithms {
     private double gama;
     private double pomak;
     private double sigma;
+    private double t;
     private IFunctions f;
 
     public Algorithms() {
@@ -28,11 +33,12 @@ public class Algorithms {
         this.r = new double[1];
         this.h = 1.0;
         this.e = 0.000001;
-        this.alfa = 1;
+        this.alfa = 1.3;
         this.beta = 0.5;
         this.gama = 2;
         this.pomak = 1.0;
         this.sigma = 0.5;
+        this.t = 1;
         this.f = new F1();
         this.k = 0.5 * (Math.sqrt(5) - 1);
     }
@@ -301,7 +307,7 @@ public class Algorithms {
                 v[i] = 0.0;
             }
             dist = distance(x, xs);
-            } while (dist > e);
+        } while (dist > e);
 
         String xString = "";
         for (double d : x) {
@@ -442,6 +448,55 @@ public class Algorithms {
 
     }
 
+    public double[] hookeJeves(double[] X0, int[] gs, int[] hs, double t) {
+
+        double[] Xp = X0.clone(), Xb = X0.clone();
+        double[] Xn = new double[Xp.length];
+        double Dx = 1.0;
+
+        do {
+            Xn = istrazi(Xp.clone(), Dx, gs, hs, t).clone();
+
+            if (mixfcilja(Xn, gs, hs, t) < mixfcilja(Xb, gs, hs, t)) {
+                for (int i = 0; i < Xp.length; i++) {
+                    Xp[i] = 2 * Xn[i] - Xb[i];
+                }
+                Xb = Xn.clone();
+            } else {
+                Dx = Dx / 2.0;
+                Xp = Xb.clone();
+            }
+        } while (Dx > e); // dok nije zadovoljen uvjet
+
+        return Xb;
+
+    }
+
+    private double mixfcilja(double[] x, int[] gs, int[] hs, double t){
+
+        double sumg = 0.0;
+        double sumh = 0.0;
+
+        for(int i=0; i<gs.length; i++){
+            double g = Limits.gLimits(gs[i], x);
+            if(g < 0){
+                sumg += 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.0;
+            }else if(g == 0){
+                sumg += 0;
+            }else{
+                sumg += Math.log(g);
+            }
+        }
+
+        for(int i=0; i<hs.length; i++){
+            double h = Limits.hLimits(hs[i], x);
+            sumh += Math.pow(h, 2);
+        }
+
+        return f.execute(x) - (1/t) * sumg + t * sumh;
+
+    }
+
     public double[] istrazi(double[] Xp, double Dx) {
         double[] x = Xp.clone();
         int n = x.length; // ne znam neki n
@@ -454,6 +509,48 @@ public class Algorithms {
             if (N > P) {
                 x[i] = x[i] - 2 * Dx;
                 N = f.execute(x.clone());
+                if (N > P) {
+                    x[i] = x[i] + Dx;
+                }
+            }
+        }
+
+        return x.clone();
+    }
+
+    public double[] istrazi(double[] Xp, double Dx, int[] gs, int[] hs, double t) {
+        double[] x = Xp.clone();
+        int n = x.length; // ne znam neki n
+
+        for (int i = 0; i < n; i++) {
+            double P = mixfcilja(x, gs, hs, t);
+            x[i] = x[i] + Dx;
+            double N = mixfcilja(x, gs, hs, t);
+
+            if (N > P) {
+                x[i] = x[i] - 2 * Dx;
+                N = mixfcilja(x, gs, hs, t);
+                if (N > P) {
+                    x[i] = x[i] + Dx;
+                }
+            }
+        }
+
+        return x.clone();
+    }
+
+    public double[] istrazi(double[] Xp, double Dx, int[] gs) {
+        double[] x = Xp.clone();
+        int n = x.length; // ne znam neki n
+
+        for (int i = 0; i < n; i++) {
+            double P = untockafcilja(x, gs);
+            x[i] = x[i] + Dx;
+            double N = untockafcilja(x, gs);
+
+            if (N > P) {
+                x[i] = x[i] - 2 * Dx;
+                N = untockafcilja(x, gs);
                 if (N > P) {
                     x[i] = x[i] + Dx;
                 }
@@ -522,10 +619,36 @@ public class Algorithms {
         return c;
     }
 
+    private double[] centroid(List<double[]> x) {
+        double[] c = new double[x.get(0).length];
+        for (int i = 0; i < c.length; i++) {
+            c[i] = 0.0;
+        }
+
+        for (int i = 0; i < x.get(0).length; i++) {
+            for (int j = 0; j < x.size(); j++) {
+                c[i] += x.get(j)[i];
+            }
+
+            c[i] /= x.size();
+        }
+
+        return c;
+    }
+
     private double[] refleksija(double[][] x, double[] xc, int h) {
         double[] xr = new double[xc.length];
         for (int i = 0; i < xc.length; i++) {
             xr[i] = (1 + alfa) * xc[i] - alfa * x[h][i];
+        }
+
+        return xr;
+    }
+
+    private double[] refleksija(List<double[]> x, double[] xc, int h) {
+        double[] xr = new double[xc.length];
+        for (int i = 0; i < xc.length; i++) {
+            xr[i] = (1 + alfa) * xc[i] - alfa * x.get(h)[i];
         }
 
         return xr;
@@ -582,6 +705,436 @@ public class Algorithms {
         }
 
         return false;
+    }
+
+    private boolean uvjet(List<double[]> x, double[] xc, int h) {
+        if (distance(x.get(h), xc) > e) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public double[] gradijent(double[] x, boolean opt) {
+
+        double[] v = new double[x.length];
+
+        int counter = 0;
+        double min = f.execute(x);
+        double[] ret = x.clone();
+        do {
+
+            v = f.d(x);
+
+            for (int i = 0; i < v.length; i++) {
+                v[i] *= -1;
+            }
+
+            if (opt) {
+
+                double[] xs = x.clone();
+
+                for (int i = 0; i < xs.length; i++) {
+                    this.unimodalni(x[i], v, xs);
+                    double[] lam = golden_cut(this.l.clone(), this.r.clone(), v.clone(), x.clone());
+                    x[i] = x[i] + lam[0] * v[i];
+                }
+
+            } else {
+
+                for (int i = 0; i < v.length; i++) {
+                    x[i] += v[i];
+                }
+
+            }
+
+            if (f.execute(x) < min) {
+                min = f.execute(x);
+                counter = 1;
+                ret = x.clone();
+            } else {
+                counter++;
+            }
+
+        } while (norm(v) > e || counter < 100);
+
+        return ret;
+
+    }
+
+    public double norm(double[] x) {
+        double sum = 0.0;
+
+        for (int i = 0; i < x.length; i++) {
+            sum += Math.pow(x[i], 2);
+        }
+
+        return Math.sqrt(sum);
+
+    }
+
+    public double[] nr(double[] x, boolean opt) {
+
+        double[] v = new double[x.length];
+
+        int counter = 0;
+        double min = f.execute(x);
+        double[] ret = x.clone();
+        do {
+
+            v = hessxgrad(x);
+
+            for (int i = 0; i < v.length; i++) {
+                v[i] *= -1;
+            }
+
+            if (opt) {
+
+                double[] xs = x.clone();
+
+                for (int i = 0; i < xs.length; i++) {
+                    this.unimodalni(x[i], v, xs);
+                    double[] lam = golden_cut(this.l.clone(), this.r.clone(), v.clone(), x.clone());
+                    x[i] = x[i] + lam[0] * v[i];
+                }
+
+            } else {
+
+                for (int i = 0; i < v.length; i++) {
+                    x[i] += v[i];
+                }
+
+            }
+
+            if (f.execute(x) < min) {
+                min = f.execute(x);
+                counter = 1;
+                ret = x.clone();
+            } else {
+                counter++;
+            }
+
+        } while (norm(v) > e || counter < 100);
+
+        return ret;
+
+    }
+
+    private double[] hessxgrad(double[] x){
+
+        IMatrix matrixHess = new Matrix();
+
+        matrixHess.setRowsCount(x.length);
+        matrixHess.setColsCount(x.length);
+
+        double[][] hess = f.H(x);
+        matrixHess.setElements(hess);
+
+        IMatrix matrixGrad = new Matrix();
+
+        double[] grad = f.d(x);
+
+        matrixGrad.setColsCount(1);
+        matrixGrad.setRowsCount(grad.length);
+
+        for(int i=0; i<matrixGrad.getRowsCount(); i++){
+            matrixGrad.setElement(i, 0, grad[i]);
+        }
+
+        int[] P = matrixHess.LUP();
+        int k = 0;
+        matrixGrad.SF(matrixHess, P, true);
+        matrixGrad.SB(matrixHess);
+
+        for(int i=0; i<matrixGrad.getRowsCount(); i++){
+            grad[i] = matrixGrad.getElement(i, 0);
+        }
+
+        return grad;
+
+    }
+
+    public double[] box(double[] x, double down, double top, int[] imps) {
+
+        Random R = new Random();
+
+        // pregledaj explicitna ogranicenja i baci tocku na granicu ako nije dobra
+        for (int i = 0; i < x.length; i++) {
+            if (Limits.expl(x[i], down, top) < 0) {
+                x[i] = down;
+            } else if (Limits.expl(x[i], down, top) > 0) {
+                x[i] = top;
+            } else {
+                // nothing
+            }
+        }
+
+        // ako ne zadovoljava implicintna gotovo
+        for (int i = 0; i < imps.length; i++) {
+            if (Limits.gLimits(imps[i], x) < 0) {
+                System.out.println("Tocka ne zadovoljava implicintna ogranicnenja!");
+                return new double[]{666.0};
+            }
+        }
+
+        double[] Xc = x.clone();
+        List<double[]> dots = new ArrayList<>();
+        dots.add(Xc);
+
+        // Generiraj 2*n tocaka
+        for (int t = 0; t < 2 * x.length; t++) {
+            double[] xt = new double[x.length];
+            for (int i = 0; i < x.length; i++) {
+                double r = R.nextDouble();
+                xt[i] = down + r * (top - down);
+            }
+
+            boolean zadovoljavaimpl = false;
+            int counterZad1 = 0;
+            while (!zadovoljavaimpl) {
+                boolean nezad = false;
+                for (int j = 0; j < imps.length; j++) {
+                    if (Limits.gLimits(j, xt) < 0) {
+                        xt = pomakC(xt, Xc);
+                        zadovoljavaimpl = false;
+                        nezad = true;
+                        break;
+                    }
+                }
+
+                if (!nezad) {
+                    zadovoljavaimpl = true;
+                }
+                if (counterZad1 > 100) {
+                    System.out.println("Too many times moved to centroid and still nothing");
+                    return new double[]{666.0};
+                } else {
+                    counterZad1++;
+                }
+
+            }
+
+            dots.add(xt);
+
+            Xc = centroid(dots);
+
+        }
+
+        int h = 0;
+        int h2 = 0;
+
+        do {
+            h = findH(dots);
+            h2 = findH2(dots);
+
+            Xc = centroid(dots, h);
+
+            double[] Xr = refleksija(dots, Xc, h);
+
+            // zadovolji explicitna
+            for (int i = 0; i < x.length; i++) {
+                if (Limits.expl(Xr[i], down, top) < 0) {
+                    Xr[i] = down;
+                } else if (Limits.expl(Xr[i], down, top) > 0) {
+                    Xr[i] = top;
+                } else {
+                    // nothing
+                }
+            }
+
+            // zadovolji implicintna
+            boolean zadovoljavaimpl = false;
+            int counterZad = 0;
+            while (!zadovoljavaimpl) {
+                boolean nezad = false;
+                for (int j = 0; j < imps.length; j++) {
+                    if (Limits.gLimits(j, Xr) < 0) {
+                        Xr = pomakC(Xr, Xc);
+                        zadovoljavaimpl = false;
+                        nezad = true;
+                        break;
+                    }
+                }
+
+                if (!nezad) {
+                    zadovoljavaimpl = true;
+                }
+
+                if (counterZad > 100) {
+                    System.out.println("Too many times moved to centroid and still nothing");
+                    return new double[]{666.0};
+                } else {
+                    counterZad++;
+                }
+            }
+
+            if(f.execute(Xr) > f.execute(dots.get(h2))){
+                Xr = pomakC(Xr, Xc);
+            }
+
+            dots.set(h, Xr.clone());
+
+        }while (uvjet(dots, Xc, h));
+
+        return Xc;
+
+    }
+
+    private double[] pomakC(double[] x, double[] Xc) {
+        double[] noviX = new double[x.length];
+        for (int i = 0; i < x.length; i++) {
+            noviX[i] = 0.5 * (x[i] + Xc[i]);
+        }
+
+        return noviX;
+    }
+
+    private int findH(List<double[]> x) {
+        int index = 0;
+        double max = -999999;
+
+        for (int i = 0; i < x.size(); i++) {
+            if (f.execute(x.get(i)) > max) {
+                max = f.execute(x.get(i));
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+    private int findH2(List<double[]> x) {
+        int index = 0;
+        int index2 = 0;
+        double max = -999999;
+
+        for (int i = 0; i < x.size(); i++) {
+            if (f.execute(x.get(i)) > max) {
+                max = f.execute(x.get(i));
+                index = i;
+            }
+        }
+
+        max = -999999;
+
+        for (int i = 0; i < x.size(); i++) {
+            if (i != index) {
+                if (f.execute(x.get(i)) > max) {
+                    max = f.execute(x.get(i));
+                    index2 = i;
+                }
+            }
+        }
+
+        return index2;
+    }
+
+    private double[] centroid(List<double[]> x, int h) {
+        double[] c = new double[x.get(0).length];
+        for (int i = 0; i < c.length; i++) {
+            c[i] = 0.0;
+        }
+
+        for (int i = 0; i < x.get(0).length; i++) {
+            for (int j = 0; j < x.size(); j++) {
+                if (j != h) {
+                    c[i] += x.get(j)[i];
+                }
+            }
+            c[i] /= (x.size() - 1);
+        }
+
+        return c;
+    }
+
+    public double[] transform(double[] x, int[] gs, int[] hs){
+
+        double[] xs = null;
+
+        int counter = 0;
+        double min = 9999999999.0;
+        double[] ret = x.clone();
+        do{
+
+            xs = x.clone();
+            x = provjeriogr(x, gs);
+            x = hookeJeves(x, gs, hs, this.t);
+
+            if (mixfcilja(x, gs, hs, t) < min) {
+                min = mixfcilja(x, gs, hs, t);
+                counter = 1;
+                ret = x.clone();
+            } else {
+                counter++;
+            }
+
+            this.t += 10;
+
+        }while(distance(x, xs) > e || counter < 100);
+
+        this.t = 1;
+
+        return x;
+
+    }
+
+    private double[] provjeriogr(double[] x, int[] gs){
+
+        boolean zad = true;
+        for(int i=0; i<gs.length; i++){
+
+            if(Limits.gLimits(gs[i], x) < 0){
+                zad = false;
+                break;
+            }
+
+        }
+
+        if(zad){
+            return x;
+        }
+
+        double[] Xp = x.clone(), Xb = x.clone();
+        double[] Xn = new double[Xp.length];
+        double Dx = 1.0;
+
+        do {
+            Xn = istrazi(Xp.clone(), Dx, gs).clone();
+
+            if (untockafcilja(Xn, gs) < untockafcilja(Xb, gs)) {
+                for (int i = 0; i < Xp.length; i++) {
+                    Xp[i] = 2 * Xn[i] - Xb[i];
+                }
+                Xb = Xn.clone();
+            } else {
+                Dx = Dx / 2.0;
+                Xp = Xb.clone();
+            }
+        } while (Dx > e); // dok nije zadovoljen uvjet
+
+        return Xb;
+
+    }
+
+    private double untockafcilja(double[] x, int[] gs){
+
+        double fsum = 0.0;
+
+        for(int i=0; i<gs.length; i++){
+            int t = 0;
+            double g = Limits.gLimits(gs[i], x);
+            if(g >= 0){
+                t = 0;
+            }else{
+                t = 1;
+            }
+
+            fsum += t * g;
+
+        }
+
+        return fsum * -1;
+
     }
 
     public double getH() {
@@ -662,5 +1215,13 @@ public class Algorithms {
 
     public double[] getR() {
         return r;
+    }
+
+    public double getT() {
+        return t;
+    }
+
+    public void setT(double t) {
+        this.t = t;
     }
 }

@@ -1,5 +1,6 @@
 package hr.fer.apr.golden_lab.functions;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,5 +57,10 @@ public abstract class IFunctions {
     public abstract double execute(double[] x);
 
     public abstract double execute(double lamda, double[] v, double[] x);
+
+    public abstract double[] d(double[] x);
+
+    public abstract double[][] H(double[] x);
+
 
 }
