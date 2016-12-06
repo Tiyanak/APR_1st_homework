@@ -23,14 +23,14 @@ public class F1 extends IFunctions {
     }
 
     public double f1x1(double[] x) {
-        return 2 * (200 * Math.pow(x[0], 2) - 200 * x[0] * x[1] + x[0] - 1);
+        return 2 * (200 * Math.pow(x[0], 3) - 200 * x[0] * x[1] + x[0] - 1);
     }
 
     public double f1x2(double[] x) {
         return 200 * (x[1] - Math.pow(x[0], 2));
     }
 
-    private double dx1x1(double[] x){ return 2 * (400 * x[0] - 200 * x[1] + 1); }
+    private double dx1x1(double[] x){ return 1200 * Math.pow(x[0], 2) - 400 * x[1] + 2; }
 
     private double dx1x2(double[] x){ return -400 * x[0]; }
 

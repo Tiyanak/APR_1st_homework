@@ -292,6 +292,7 @@ public class Main {
 
             }else if(line.contains("drugi")){
 
+                System.out.println("\nF1 GRADIJENT");
                 a.setF(new F1());
                 a.getF().resetCounter();
                 double[] grad1 = a.gradijent(new double[]{-1.9, 2.0}, true);
@@ -303,6 +304,7 @@ public class Main {
                 System.out.print("F(x) = " + a.getF().execute(grad1) + " | Brojac: " );
                 a.getF().printCounter();
 
+                System.out.println("\nF1 N-R");
                 a.getF().resetCounter();
                 double[] nr1 = a.nr(new double[]{-1.9, 2.0}, true);
 
@@ -313,6 +315,8 @@ public class Main {
                 System.out.print("F(x) = " + a.getF().execute(nr1) + " | Brojac: " );
                 a.getF().printCounter();
 
+
+                System.out.println("\nF2 GRADIJENT");
                 a.setF(new F2());
                 a.getF().resetCounter();
                 double[] grad2 = a.gradijent(new double[]{0.1, 0.3}, true);
@@ -324,6 +328,8 @@ public class Main {
                 System.out.print("F(x) = " + a.getF().execute(grad2) + " | Brojac: " );
                 a.getF().printCounter();
 
+
+                System.out.println("\nF1 N-R");
                 a.getF().resetCounter();
                 double[] nr2 = a.nr(new double[]{0.1, 0.3}, true);
 
