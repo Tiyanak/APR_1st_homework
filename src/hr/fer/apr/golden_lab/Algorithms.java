@@ -6,27 +6,22 @@ import hr.fer.apr.golden_lab.functions.Limits;
 import hr.fer.apr.linear_algebra.IMatrix;
 import hr.fer.apr.linear_algebra.Matrix;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Igor Farszky on 19.10.2016..
  */
+@SuppressWarnings("all")
 public class Algorithms {
 
     private final double k;
-    private double[] l;
-    private double[] r;
-    private double h;
-    private double e;
-    private double alfa;
-    private double beta;
-    private double gama;
-    private double pomak;
-    private double sigma;
-    private double t;
+    private double[] l, r;
+    private double h, e, alfa, beta, gama, pomak, sigma, t, p, pk;
+    private List<Double> dg, gg;
     private IFunctions f;
+    private int treshold, popsize, M, inacica;
+    private boolean binarniPrikaz;
+    private List<Integer> brojBitova;
 
     public Algorithms() {
         this.l = new double[1];
@@ -41,6 +36,16 @@ public class Algorithms {
         this.t = 1;
         this.f = new F1();
         this.k = 0.5 * (Math.sqrt(5) - 1);
+        this.treshold = 1000;
+        this.popsize = 10;
+        this.binarniPrikaz =  false;
+        this.pk = 1.0;
+        this.p = 0.1;
+        this.M = 1;
+        this.inacica = 3;
+        this.dg = new ArrayList<>();
+        this.gg = new ArrayList<>();
+        this.brojBitova = new ArrayList<>();
     }
 
     public double[] golden_cut(double[] a, double[] b) {
@@ -1137,6 +1142,332 @@ public class Algorithms {
 
     }
 
+    public double[] GA(){
+
+        int tresholdCopy = this.treshold;
+
+        List<double[]> populacija = stvoriPopulaciju();
+        Map<double[][], Double> fitnessPopulacija = new HashMap<>();
+
+        fitnessPopulacija = evaulirajPopulaciju(populacija);
+
+        do{
+            Map<double[][], Double> jedinke = odaberiSlucajno(fitnessPopulacija);
+            double[][] najlosija = izbaciNajlosiju(jedinke);
+
+            fitnessPopulacija.remove(najlosija);
+            jedinke.remove(najlosija);
+
+            List<double[][]> roditelji = izaberiRoditelje(jedinke);
+            double[][] dijete = krizaj(roditelji);
+            dijete = mutiraj(dijete);
+            Double fitnessNoveJedinke = evaulirajJedinku(dijete);
+
+            fitnessPopulacija.put(dijete, fitnessNoveJedinke);
+
+            tresholdCopy--;
+
+        }while(tresholdCopy > 0 || fitnessPopulacija.get(najboljaJedinka(fitnessPopulacija)) > this.e);
+
+        return najboljaJedinka(fitnessPopulacija);
+
+    }
+
+    public List<double[]> stvoriPopulaciju(){
+
+        List<double[]> populacija = new ArrayList<>();
+        Random r = new Random();
+
+        for(int i=0; i<popsize; i++){
+
+            double[] jedinka = new double[this.dg.size()];
+
+            for(int j=0; j<this.dg.size(); j++){
+                double predznak = -1.0;
+                if(r.nextDouble() >= 0.5){
+                    predznak *= -1.0;
+                }
+
+                jedinka[j] = predznak * round(r.nextDouble() * 100, 2);
+
+            }
+
+            populacija.add(jedinka);
+
+        }
+
+        return populacija;
+
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
+    public List<Integer> potrebniBrojBitova(){
+        List<Integer> brojBitova = new ArrayList<>();
+
+        for(int i=0; i<this.dg.size(); i++){
+            int x = (int) ((this.gg.get(i) - this.dg.get(i)) / this.e);
+            brojBitova.add(nadiMinBrojBitova(x));
+        }
+
+        this.brojBitova = brojBitova;
+        return this.brojBitova;
+
+    }
+
+    public int nadiMinBrojBitova(int x){
+
+        int bitovi = 0;
+        int sum = 0;
+        while(sum < x){
+            bitovi++;
+            sum += Math.pow(2, bitovi-1);
+        }
+
+        return bitovi;
+
+    }
+
+    public Map<double[][], Double> evaulirajPopulaciju(List<double[]> populacija){
+
+        Map<double[][], Double> evoPopulacija = new HashMap<>();
+
+        List<Integer> n = potrebniBrojBitova();
+
+        for(int i=0; i<populacija.size(); i++){
+            double[][] binarnaJedinka = new double[this.dg.size()][n.size()];
+            for(int j=0; j<this.dg.size(); j++){
+                binarnaJedinka[j] = pretvoriUbinarno(populacija.get(i)[j], n.get(j), j);
+            }
+            evoPopulacija.put(binarnaJedinka, this.f.execute(populacija.get(i)));
+        }
+
+        return evoPopulacija;
+
+    }
+
+    public double[] pretvoriUbinarno(double x, int n, int j){
+        int bin = (int)Math.round(((x - this.dg.get(j)) / (this.gg.get(j) - this.dg.get(j))) * (Math.pow(2, n) - 1));
+
+        double[] binarno = new double[n];
+
+        for(int i=n-1; i>=0; i--){
+            if(bin - Math.pow(2, i) > 0){
+                binarno[n-1-i] = 1;
+                bin -= Math.pow(2, i);
+            }else{
+                binarno[n-1-i] = 0;
+            }
+        }
+
+        return binarno;
+
+    }
+
+    public Map<double[][], Double> odaberiSlucajno(Map<double[][], Double> fitnessPopulacija){
+
+        int counter = fitnessPopulacija.size();
+        Random r = new Random();
+        Map<double[][], Double> odabir = fitnessPopulacija;
+
+        while(counter > this.inacica){
+
+            int counter2 = 0;
+            double[][] makni = new double[this.dg.size()][];
+            for(Map.Entry<double[][], Double> entry: odabir.entrySet()){
+
+                if(r.nextDouble() < 0.1){
+                    makni = entry.getKey();
+                    break;
+                }
+
+                counter2++;
+
+                if(counter2 == odabir.size()-1){
+                    makni = entry.getKey();
+                }
+
+            }
+
+            odabir.remove(makni);
+            counter--;
+
+        }
+
+        return odabir;
+
+    }
+
+    public double[][] izbaciNajlosiju(Map<double[][], Double> najlosija){
+
+        double[][] najlosijaKey = new double[this.dg.size()][];
+        Double najlosijaValue = -99999999.0;
+        for(Map.Entry<double[][], Double> entry: najlosija.entrySet()){
+
+            if(entry.getValue() > najlosijaValue){
+                najlosijaKey = entry.getKey();
+                najlosijaValue = entry.getValue();
+            }
+
+        }
+
+        return najlosijaKey;
+
+    }
+
+    public List<double[][]> izaberiRoditelje(Map<double[][], Double> jedinke){
+
+        Random r = new Random();
+
+        double totalFitness = 0.0;
+        for(Map.Entry<double[][], Double> entry: jedinke.entrySet()){
+            totalFitness += entry.getValue();
+        }
+
+        Map<double[][], double[]> vjerojatnosti = new HashMap<>();
+
+        double gornjaVjerojatnost = 0.0;
+        double donjaVjerojatnost = 0.0;
+        for(Map.Entry<double[][], Double> entry: jedinke.entrySet()){
+            double vjerojatnost = entry.getValue() / totalFitness;
+
+            gornjaVjerojatnost += vjerojatnost;
+
+            if(gornjaVjerojatnost > 1.0){
+                gornjaVjerojatnost = 1.0;
+            }
+
+            vjerojatnosti.put(entry.getKey(), new double[]{donjaVjerojatnost, gornjaVjerojatnost});
+
+            donjaVjerojatnost = gornjaVjerojatnost;
+
+        }
+
+        List<double[][]> roditelji = new ArrayList<>();
+
+        double prviVj = r.nextDouble();
+        double[][] prviRoditelj = new double[dg.size()][];
+        for(Map.Entry<double[][], double[]> entry: vjerojatnosti.entrySet()){
+            if(entry.getValue()[0] < prviVj && entry.getValue()[1] > prviVj){
+                prviRoditelj = entry.getKey();
+                roditelji.add(prviRoditelj);
+                break;
+            }
+        }
+
+        vjerojatnosti.remove(prviRoditelj);
+
+        while(true){
+            boolean zastavica = false;
+            double drugiVj = r.nextDouble();
+            for(Map.Entry<double[][], double[]> entry: vjerojatnosti.entrySet()){
+                if(entry.getValue()[0] < drugiVj && entry.getValue()[1] > drugiVj){
+                    roditelji.add(entry.getKey());
+                    zastavica = true;
+                    break;
+                }
+            }
+
+            if(zastavica){
+                break;
+            }
+        }
+
+        return roditelji;
+
+    }
+
+    public double[][] krizaj(List<double[][]> jedinke){
+
+        double[][] dijete = new double[dg.size()][];
+        Random r = new Random();
+
+        double[][] prvi = jedinke.get(0);
+        double[][] drugi = jedinke.get(1);
+        for(int i=0; i<dg.size(); i++){
+            double[] bitovi = new double[this.brojBitova.get(i)];
+
+            if(M < this.brojBitova.get(i)){
+                int cutPeace = (int) M / this.brojBitova.get(i);
+
+                int kojiRoditelj = 2;
+                int sumBitovaPrije = 0;
+                int sumBitovaPoslije = cutPeace;
+                while(sumBitovaPoslije <= this.brojBitova.get(i)){
+
+                    if(this.brojBitova.get(i) - sumBitovaPoslije < cutPeace){
+                        sumBitovaPoslije = this.brojBitova.get(i);
+                    }
+
+                    double vjKrizanja = r.nextDouble();
+                    if(pk >= 1.0) {
+                        if (kojiRoditelj % 2 == 0) {
+                            for (int j = sumBitovaPrije; j < sumBitovaPoslije; j++) {
+                                bitovi[j] = prvi[i][j];
+                            }
+                        } else {
+                            for (int j = sumBitovaPrije; j < sumBitovaPoslije; j++) {
+                                bitovi[j] = drugi[i][j];
+                            }
+                        }
+                    }else{
+                        if (vjKrizanja < pk) {
+                            for (int j = sumBitovaPrije; j < sumBitovaPoslije; j++) {
+                                bitovi[j] = prvi[i][j];
+                            }
+                        } else {
+                            for (int j = sumBitovaPrije; j < sumBitovaPoslije; j++) {
+                                bitovi[j] = drugi[i][j];
+                            }
+                        }
+                    }
+
+                    sumBitovaPrije = sumBitovaPoslije;
+                    sumBitovaPoslije += cutPeace;
+                    kojiRoditelj++;
+
+                }
+            }else{
+
+                if(r.nextDouble() < 0.5){
+                    for(int j=0; j<brojBitova.get(i); j++){
+                        bitovi[j] = prvi[i][j];
+                    }
+                }else{
+                    for(int j=0; j<brojBitova.get(i); j++){
+                        bitovi[j] = drugi[i][j];
+                    }
+                }
+
+            }
+
+            dijete[i] = bitovi;
+
+        }
+
+        return dijete;
+
+    }
+
+    public List<double[]> mutiraj(List<double[]> noveJedinke, double p){
+
+    }
+
+    public double[] najboljaJedinka(Map<double[], Double> fitnessPopulacija){
+
+    }
+
+    public double fitness(double[] jedinka){
+
+    }
+
     public double getH() {
         return h;
     }
@@ -1223,5 +1554,29 @@ public class Algorithms {
 
     public void setT(double t) {
         this.t = t;
+    }
+
+    public int getTreshold() {
+        return treshold;
+    }
+
+    public void setTreshold(int treshold) {
+        this.treshold = treshold;
+    }
+
+    public double getDg() {
+        return dg;
+    }
+
+    public void setDg(double dg) {
+        this.dg = dg;
+    }
+
+    public double getGg() {
+        return gg;
+    }
+
+    public void setGg(double gg) {
+        this.gg = gg;
     }
 }

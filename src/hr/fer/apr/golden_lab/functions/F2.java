@@ -15,7 +15,14 @@ public class F2 extends IFunctions {
     }
 
     public double f2(double[] x) {
-        return (x[0] - 4) * (x[0] - 4) + 4 * (x[1] - 2) * (x[1] - 2);
+        double sum = 0.0;
+        int i = 0;
+        for(double d: x){
+            sum += Math.pow(d-i, 2);
+            i++;
+        }
+
+        return sum;
     }
 
     public double f2(double lambda, double[] v, double[] x) {

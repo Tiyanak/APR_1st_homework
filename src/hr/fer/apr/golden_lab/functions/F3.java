@@ -15,7 +15,14 @@ public class F3 extends IFunctions {
     }
 
     public double f3(double[] x) {
-        return Math.pow(x[0]-2, 2) + Math.pow(x[1]+3, 2);
+        double sum = 0.0;
+        int i = 0;
+        for(double d: x){
+            sum += Math.pow(d, 2);
+            i++;
+        }
+
+        return 0.5 + ((Math.pow(Math.sin(Math.sqrt(sum)), 2) - 0.5) / (Math.pow(1 + 0.001 * sum, 2)));
     }
 
     public double f3(double lamda, double[] v, double[] x) {
