@@ -1,5 +1,6 @@
 package hr.fer.apr.golden_lab;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import hr.fer.apr.golden_lab.functions.F1;
 import hr.fer.apr.golden_lab.functions.IFunctions;
 import hr.fer.apr.golden_lab.functions.Limits;
@@ -19,15 +20,17 @@ public class Algorithms {
     private double h, e, alfa, beta, gama, pomak, sigma, t, p, pk;
     private List<Double> dg, gg;
     private IFunctions f;
-    private int treshold, popsize, M, inacica;
+    private int treshold, popsize, M, inacica, brojVarijabli;
     private boolean binarniPrikaz;
     private List<Integer> brojBitova;
+    private int[][] radijVektor;
+    private double pradij;
 
     public Algorithms() {
         this.l = new double[1];
         this.r = new double[1];
         this.h = 1.0;
-        this.e = 0.000001;
+        this.e = 0.01;
         this.alfa = 1.3;
         this.beta = 0.5;
         this.gama = 2;
@@ -36,7 +39,7 @@ public class Algorithms {
         this.t = 1;
         this.f = new F1();
         this.k = 0.5 * (Math.sqrt(5) - 1);
-        this.treshold = 1000;
+        this.treshold = 50000;
         this.popsize = 10;
         this.binarniPrikaz =  false;
         this.pk = 1.0;
@@ -46,6 +49,39 @@ public class Algorithms {
         this.dg = new ArrayList<>();
         this.gg = new ArrayList<>();
         this.brojBitova = new ArrayList<>();
+        this.brojVarijabli = 2;
+        this.pradij = 1.0;
+
+        initOgranicenja();
+
+        this.radijVektor = new int[brojVarijabli][];
+    }
+
+    public void initOgranicenja(){
+
+        for (int i=0; i<this.brojVarijabli; i++){
+            this.dg.add(-50.0);
+            this.gg.add((150.0));
+        }
+
+    }
+
+    public void setRadijCustom(int[] vektor){
+        for(int i=0; i<brojVarijabli; i++){
+            this.radijVektor[i] = vektor;
+        }
+    }
+
+    public void setLimits(double dg, double gg, int index, boolean all){
+        if(all) {
+            for (int i = 0; i < brojVarijabli; i++) {
+                this.dg.set(i, dg);
+                this.gg.set(i, gg);
+            }
+        }else{
+            this.dg.set(index, dg);
+            this.gg.set(index, gg);
+        }
     }
 
     public double[] golden_cut(double[] a, double[] b) {
@@ -1142,7 +1178,7 @@ public class Algorithms {
 
     }
 
-    public double[] GA(){
+    public double[][] GA(){
 
         int tresholdCopy = this.treshold;
 
@@ -1159,17 +1195,54 @@ public class Algorithms {
             jedinke.remove(najlosija);
 
             List<double[][]> roditelji = izaberiRoditelje(jedinke);
-            double[][] dijete = krizaj(roditelji);
+            double[][] dijete = krizajUniformno(roditelji);
             dijete = mutiraj(dijete);
-            Double fitnessNoveJedinke = evaulirajJedinku(dijete);
+            Double fitnessNoveJedinke = fitness(dijete);
 
             fitnessPopulacija.put(dijete, fitnessNoveJedinke);
 
             tresholdCopy--;
 
-        }while(tresholdCopy > 0 || fitnessPopulacija.get(najboljaJedinka(fitnessPopulacija)) > this.e);
+        }while(tresholdCopy > 0 && fitnessPopulacija.get(najboljaJedinka(fitnessPopulacija)) > this.e);
 
-        return najboljaJedinka(fitnessPopulacija);
+        double[][] najbolja = najboljaJedinka(fitnessPopulacija);
+
+        if(binarniPrikaz){
+            System.out.println("Najbolja jedinka: " );
+            for(double[] d: najbolja){
+                String bitovniPrikaz = "";
+                for(double db: d){
+                    bitovniPrikaz += db + ",  ";
+                }
+                System.out.println(bitovniPrikaz);
+            }
+            System.out.println("Value: " + fitness(najbolja));
+
+            return najbolja;
+
+        }else{
+            System.out.println("Najbolja jedinka: ");
+            int i = 0;
+            double[] h = new double[this.brojVarijabli];
+            String dekPrikaz = "";
+            for(double[] d: najbolja){
+                double o = binUdek(d, i);
+                h[i] = o;
+                dekPrikaz += o + ", ";
+                i++;
+            }
+            System.out.println(dekPrikaz);
+            System.out.println("Value: " + this.f.execute(h));
+
+            double[][] ret = new double[this.brojVarijabli][1];
+            int q = 0;
+            for(double p: h){
+                ret[q][0] = p;
+                q++;
+            }
+
+            return ret;
+        }
 
     }
 
@@ -1180,15 +1253,12 @@ public class Algorithms {
 
         for(int i=0; i<popsize; i++){
 
-            double[] jedinka = new double[this.dg.size()];
+            double[] jedinka = new double[this.brojVarijabli];
 
-            for(int j=0; j<this.dg.size(); j++){
-                double predznak = -1.0;
-                if(r.nextDouble() >= 0.5){
-                    predznak *= -1.0;
-                }
+            for(int j=0; j<this.brojVarijabli; j++){
 
-                jedinka[j] = predznak * round(r.nextDouble() * 100, 2);
+                double range = this.gg.get(j) - this.dg.get(j);
+                jedinka[j] = ((r.nextDouble() * (range)) + this.dg.get(j));
 
             }
 
@@ -1212,13 +1282,32 @@ public class Algorithms {
     public List<Integer> potrebniBrojBitova(){
         List<Integer> brojBitova = new ArrayList<>();
 
-        for(int i=0; i<this.dg.size(); i++){
+        for(int i=0; i<this.brojVarijabli; i++){
             int x = (int) ((this.gg.get(i) - this.dg.get(i)) / this.e);
             brojBitova.add(nadiMinBrojBitova(x));
+
+            this.radijVektor[i] = napraviRadijVektor(brojBitova.get(i));
         }
 
         this.brojBitova = brojBitova;
         return this.brojBitova;
+
+    }
+
+    public int[] napraviRadijVektor(int brojBitova){
+
+        int[] radij = new int[brojBitova];
+        Random r = new Random();
+
+        for(int i=0; i<brojBitova; i++){
+            if(r.nextDouble() <= pradij){
+                radij[i] = 1;
+            }else{
+                radij[i] = 0;
+            }
+        }
+
+        return radij;
 
     }
 
@@ -1242,8 +1331,8 @@ public class Algorithms {
         List<Integer> n = potrebniBrojBitova();
 
         for(int i=0; i<populacija.size(); i++){
-            double[][] binarnaJedinka = new double[this.dg.size()][n.size()];
-            for(int j=0; j<this.dg.size(); j++){
+            double[][] binarnaJedinka = new double[this.brojVarijabli][n.size()];
+            for(int j=0; j<this.brojVarijabli; j++){
                 binarnaJedinka[j] = pretvoriUbinarno(populacija.get(i)[j], n.get(j), j);
             }
             evoPopulacija.put(binarnaJedinka, this.f.execute(populacija.get(i)));
@@ -1275,31 +1364,21 @@ public class Algorithms {
 
         int counter = fitnessPopulacija.size();
         Random r = new Random();
-        Map<double[][], Double> odabir = fitnessPopulacija;
+        Map<double[][], Double> odabir = new HashMap<>();
+        List<double[][]> mapaUlistu = new ArrayList<>();
 
-        while(counter > this.inacica){
-
-            int counter2 = 0;
-            double[][] makni = new double[this.dg.size()][];
-            for(Map.Entry<double[][], Double> entry: odabir.entrySet()){
-
-                if(r.nextDouble() < 0.1){
-                    makni = entry.getKey();
-                    break;
-                }
-
-                counter2++;
-
-                if(counter2 == odabir.size()-1){
-                    makni = entry.getKey();
-                }
-
-            }
-
-            odabir.remove(makni);
-            counter--;
-
+        for(Map.Entry<double[][], Double> e: fitnessPopulacija.entrySet()){
+            mapaUlistu.add(e.getKey());
         }
+
+        while(odabir.size() < inacica){
+            double[][] randJedinka = mapaUlistu.get((int)r.nextDouble() * (mapaUlistu.size() - 1));
+
+            odabir.put(randJedinka, fitnessPopulacija.get(randJedinka));
+
+            mapaUlistu.remove(randJedinka);
+        }
+
 
         return odabir;
 
@@ -1307,7 +1386,7 @@ public class Algorithms {
 
     public double[][] izbaciNajlosiju(Map<double[][], Double> najlosija){
 
-        double[][] najlosijaKey = new double[this.dg.size()][];
+        double[][] najlosijaKey = new double[this.brojVarijabli][];
         Double najlosijaValue = -99999999.0;
         for(Map.Entry<double[][], Double> entry: najlosija.entrySet()){
 
@@ -1331,12 +1410,20 @@ public class Algorithms {
             totalFitness += entry.getValue();
         }
 
+        Map<double[][], Double> pomMap = new HashMap<>();
+        double totalFit2 = 0.0;
+        for(Map.Entry<double[][], Double> entry: jedinke.entrySet()) {
+            double secondFit = totalFitness - entry.getValue();
+            pomMap.put(entry.getKey(), secondFit);
+            totalFit2 += secondFit;
+        }
+
         Map<double[][], double[]> vjerojatnosti = new HashMap<>();
 
         double gornjaVjerojatnost = 0.0;
         double donjaVjerojatnost = 0.0;
-        for(Map.Entry<double[][], Double> entry: jedinke.entrySet()){
-            double vjerojatnost = entry.getValue() / totalFitness;
+        for(Map.Entry<double[][], Double> entry: pomMap.entrySet()){
+            double vjerojatnost = entry.getValue() / totalFit2;
 
             gornjaVjerojatnost += vjerojatnost;
 
@@ -1386,16 +1473,16 @@ public class Algorithms {
 
     public double[][] krizaj(List<double[][]> jedinke){
 
-        double[][] dijete = new double[dg.size()][];
+        double[][] dijete = new double[brojVarijabli][];
         Random r = new Random();
 
         double[][] prvi = jedinke.get(0);
         double[][] drugi = jedinke.get(1);
-        for(int i=0; i<dg.size(); i++){
+        for(int i=0; i<brojVarijabli; i++){
             double[] bitovi = new double[this.brojBitova.get(i)];
 
             if(M < this.brojBitova.get(i)){
-                int cutPeace = (int) M / this.brojBitova.get(i);
+                int cutPeace = (int) this.brojBitova.get(i) / (M+1);
 
                 int kojiRoditelj = 2;
                 int sumBitovaPrije = 0;
@@ -1456,15 +1543,90 @@ public class Algorithms {
 
     }
 
-    public List<double[]> mutiraj(List<double[]> noveJedinke, double p){
+    public double[][] krizajUniformno(List<double[][]> jedinke){
+
+        double[][] dijete = new double[brojVarijabli][];
+        double[][] prva = jedinke.get(0);
+        double[][] druga = jedinke.get(1);
+
+        for(int i=0; i<brojVarijabli; i++){
+            double[] pom = new double[brojBitova.get(i)];
+            for(int j=0; j<brojBitova.get(i); j++){
+                pom[j] = ((int)prva[i][j] ^ (int)druga[i][j]) & (int)radijVektor[i][j] | ((int)prva[i][j] & (int)druga[i][j]);
+            }
+            dijete[i] = pom;
+        }
+
+        return dijete;
 
     }
 
-    public double[] najboljaJedinka(Map<double[], Double> fitnessPopulacija){
+    public double[][] mutiraj(double[][] jedinka){
+
+        Random r = new Random();
+        int N = 0;
+        for(int ni: this.brojBitova){
+            N += ni;
+        }
+        double pMutacije = 1 - Math.pow(1 - this.p, N);
+
+        for(int i=0; i<jedinka.length; i++){
+            for(int j=0; j<jedinka[i].length; j++){
+                if(r.nextDouble() < pMutacije){
+                    jedinka[i][j] = 1 ^ (int)jedinka[i][j];
+                }
+            }
+        }
+
+        return jedinka;
 
     }
 
-    public double fitness(double[] jedinka){
+    public double[][] najboljaJedinka(Map<double[][], Double> fitnessPopulacija){
+
+        double[][] najbolja = new double[this.brojVarijabli][];
+        Double najFitness = 999999999999999999999999999999999999999999999999999999999999999999999.0;
+        for(Map.Entry<double[][], Double> entry: fitnessPopulacija.entrySet()){
+            if(entry.getValue() < najFitness){
+                najFitness = entry.getValue();
+                najbolja = entry.getKey();
+            }
+        }
+
+        return najbolja;
+
+    }
+
+    public double fitness(double[][] jedinka){
+
+        List<Double> dekJedinka = new ArrayList<>();
+
+        int i = 0;
+        for(double[] d: jedinka){
+            double vrijednost = binUdek(d, i);
+            dekJedinka.add(vrijednost);
+            i++;
+        }
+
+        double[] ah = new double[dekJedinka.size()];
+        int j = 0;
+        for(Double d: dekJedinka){
+            ah[j] = d;
+            j++;
+        }
+
+        return this.f.execute(ah);
+
+    }
+
+    public double binUdek(double[] d, int index){
+
+        double sum = 0.0;
+        for(int i=d.length-1; i>=0; i--){
+            sum += Math.pow(2, i) * d[i];
+        }
+
+        return (sum / (Math.pow(2, d.length) - 1)) * (this.gg.get(index) - this.dg.get(index)) + this.dg.get(index);
 
     }
 
@@ -1564,19 +1726,99 @@ public class Algorithms {
         this.treshold = treshold;
     }
 
-    public double getDg() {
+    public double getP() {
+        return p;
+    }
+
+    public void setP(double p) {
+        this.p = p;
+    }
+
+    public double getPk() {
+        return pk;
+    }
+
+    public void setPk(double pk) {
+        this.pk = pk;
+    }
+
+    public List<Double> getDg() {
         return dg;
     }
 
-    public void setDg(double dg) {
+    public void setDg(List<Double> dg) {
         this.dg = dg;
     }
 
-    public double getGg() {
+    public List<Double> getGg() {
         return gg;
     }
 
-    public void setGg(double gg) {
+    public void setGg(List<Double> gg) {
         this.gg = gg;
+    }
+
+    public int getPopsize() {
+        return popsize;
+    }
+
+    public void setPopsize(int popsize) {
+        this.popsize = popsize;
+    }
+
+    public int getM() {
+        return M;
+    }
+
+    public void setM(int m) {
+        M = m;
+    }
+
+    public int getInacica() {
+        return inacica;
+    }
+
+    public void setInacica(int inacica) {
+        this.inacica = inacica;
+    }
+
+    public boolean isBinarniPrikaz() {
+        return binarniPrikaz;
+    }
+
+    public void setBinarniPrikaz(boolean binarniPrikaz) {
+        this.binarniPrikaz = binarniPrikaz;
+    }
+
+    public List<Integer> getBrojBitova() {
+        return brojBitova;
+    }
+
+    public void setBrojBitova(List<Integer> brojBitova) {
+        this.brojBitova = brojBitova;
+    }
+
+    public int getBrojVarijabli() {
+        return brojVarijabli;
+    }
+
+    public void setBrojVarijabli(int brojVarijabli) {
+        this.brojVarijabli = brojVarijabli;
+    }
+
+    public int[][] getRadijVektor() {
+        return radijVektor;
+    }
+
+    public void setRadijVektor(int[][] radijVektor) {
+        this.radijVektor = radijVektor;
+    }
+
+    public double getPradij() {
+        return pradij;
+    }
+
+    public void setPradij(double pradij) {
+        this.pradij = pradij;
     }
 }

@@ -4,6 +4,7 @@ import hr.fer.apr.golden_lab.functions.*;
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.function.IntBinaryOperator;
 
 /**
  * Created by Igor Farszky on 20.10.2016..
@@ -23,32 +24,14 @@ public class Main {
 
             String line = sc.nextLine();
 
-            if (line.contains("e = ")) {
-                a.setE(Double.parseDouble(line.substring(4)));
-            } else if (line.contains("h = ")) {
-                a.setH(Double.parseDouble(line.substring(4)));
+            if (line.length() == 0) {
+                System.out.println("upisi nesto: ");
             } else if (line.contains("alfa = ")) {
                 a.setAlfa(Double.parseDouble(line.substring(7)));
             } else if (line.contains("beta = ")) {
                 a.setBeta(Double.parseDouble(line.substring(7)));
             } else if (line.contains("gama = ")) {
                 a.setGama(Double.parseDouble(line.substring(7)));
-            } else if (line.contains("f = ")) {
-                String fun = line.substring(4);
-
-                if (fun.equals("f1")) {
-                    a.setF(new F1());
-                } else if (fun.equals("f2")) {
-                    a.setF(new F2());
-                } else if (fun.equals("f3")) {
-                    a.setF(new F3());
-                } else if (fun.equals("f4")) {
-                    a.setF(new F4());
-                } else if (fun.equals("f0")) {
-                    a.setF(new F0());
-                } else {
-
-                }
             } else if (line.contains("pomak = ")) {
                 a.setPomak(Double.parseDouble(line.substring(8)));
             } else if (line.contains("sigma = ")) {
@@ -147,11 +130,11 @@ public class Main {
                     a.getF().printCounter(params);
                 }
 
-            } else if(line.contains("reset")){
+            } else if (line.contains("reset")) {
                 a.getF().resetCounter();
-            }else if(line.contains("gradopt(")){
+            } else if (line.contains("gradopt(")) {
 
-                String var = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+                String var = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 
                 double[] value = ReadXsFromFile.readOneSpot(PATH + var + ".txt");
 
@@ -164,8 +147,8 @@ public class Main {
 
                 System.out.println("F(x) = " + a.getF().execute(value));
 
-            }else if(line.contains("grad(")){
-                String var = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+            } else if (line.contains("grad(")) {
+                String var = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 
                 double[] value = ReadXsFromFile.readOneSpot(PATH + var + ".txt");
 
@@ -177,8 +160,8 @@ public class Main {
                 }
 
                 System.out.println("F(x) = " + a.getF().execute(value));
-            }else if(line.contains("box(")){
-                String vars = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+            } else if (line.contains("box(")) {
+                String vars = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 
                 String poctocka = vars.split(", ")[0];
                 String expogr = vars.split(", ")[1];
@@ -189,7 +172,7 @@ public class Main {
                 double[] impogrvalue = ReadXsFromFile.readOneSpot(PATH + impogr + ".txt");
 
                 int[] imps = new int[impogrvalue.length];
-                for(int i=0; i<imps.length; i++){
+                for (int i = 0; i < imps.length; i++) {
                     imps[i] = (int) impogrvalue[i];
                 }
 
@@ -199,12 +182,12 @@ public class Main {
                     System.out.print(d + ", ");
                 }
 
-                if(value[0] != 666.0){
+                if (value[0] != 666.0) {
                     System.out.println("F(x) = " + a.getF().execute(value));
                 }
 
-            }else if(line.contains("trans(")){
-                String vars = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+            } else if (line.contains("trans(")) {
+                String vars = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 
                 String poctocka = vars.split(", ")[0];
                 String gs = vars.split(", ")[1];
@@ -215,20 +198,20 @@ public class Main {
                 double[] hv = ReadXsFromFile.readOneSpot(PATH + hs + ".txt");
 
                 int[] gints = new int[gv.length];
-                if(gv[0] != 666.0) {
+                if (gv[0] != 666.0) {
                     for (int i = 0; i < gints.length; i++) {
                         gints[i] = (int) gv[i];
                     }
-                }else{
+                } else {
                     gints = new int[0];
                 }
 
                 int[] hints = new int[hv.length];
-                if(hv[0] != 666.0) {
+                if (hv[0] != 666.0) {
                     for (int i = 0; i < hints.length; i++) {
                         hints[i] = (int) hv[i];
                     }
-                }else{
+                } else {
                     hints = new int[0];
                 }
 
@@ -240,11 +223,11 @@ public class Main {
 
                 System.out.println("F(x) = " + a.getF().execute(value));
 
-            }else if(line.contains("t =")){
+            } else if (line.contains("t =")) {
                 a.setT(Double.parseDouble(line.substring(4)));
-            }else if(line.contains("nropt(")){
+            } else if (line.contains("nropt(")) {
 
-                String var = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+                String var = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 
                 double[] value = ReadXsFromFile.readOneSpot(PATH + var + ".txt");
 
@@ -257,7 +240,7 @@ public class Main {
 
                 System.out.println("F(x) = " + a.getF().execute(value));
 
-            }else if(line.contains("nr(")) {
+            } else if (line.contains("nr(")) {
                 String var = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 
                 double[] value = ReadXsFromFile.readOneSpot(PATH + var + ".txt");
@@ -270,7 +253,7 @@ public class Main {
                 }
 
                 System.out.println("F(x) = " + a.getF().execute(value));
-            }else if(line.contains("prvi")){
+            } else if (line.contains("prvi")) {
 
                 a.getF().resetCounter();
                 a.setF(new F3());
@@ -290,7 +273,7 @@ public class Main {
 
                 System.out.println("Uz optimizaciju: F(x) = " + a.getF().execute(grad3opt));
 
-            }else if(line.contains("drugi")){
+            } else if (line.contains("drugi")) {
 
                 System.out.println("\nF1 GRADIJENT");
                 a.setF(new F1());
@@ -301,7 +284,7 @@ public class Main {
                     System.out.print(d + ", ");
                 }
 
-                System.out.print("F(x) = " + a.getF().execute(grad1) + " | Brojac: " );
+                System.out.print("F(x) = " + a.getF().execute(grad1) + " | Brojac: ");
                 a.getF().printCounter();
 
                 System.out.println("\nF1 N-R");
@@ -312,7 +295,7 @@ public class Main {
                     System.out.print(d + ", ");
                 }
 
-                System.out.print("F(x) = " + a.getF().execute(nr1) + " | Brojac: " );
+                System.out.print("F(x) = " + a.getF().execute(nr1) + " | Brojac: ");
                 a.getF().printCounter();
 
 
@@ -325,7 +308,7 @@ public class Main {
                     System.out.print(d + ", ");
                 }
 
-                System.out.print("F(x) = " + a.getF().execute(grad2) + " | Brojac: " );
+                System.out.print("F(x) = " + a.getF().execute(grad2) + " | Brojac: ");
                 a.getF().printCounter();
 
 
@@ -337,10 +320,10 @@ public class Main {
                     System.out.print(d + ", ");
                 }
 
-                System.out.print("F(x) = " + a.getF().execute(nr2) + " | Brojac: " );
+                System.out.print("F(x) = " + a.getF().execute(nr2) + " | Brojac: ");
                 a.getF().printCounter();
 
-            }else if(line.contains("treci")){
+            } else if (line.contains("treci")) {
 
                 a.setF(new F1());
                 double[] box1 = a.box(new double[]{-1.9, 2.0}, -100, 100, new int[]{0, 1});
@@ -360,7 +343,7 @@ public class Main {
 
                 System.out.println("F(x) = " + a.getF().execute(box2));
 
-            }else if(line.contains("cetvrti")){
+            } else if (line.contains("cetvrti")) {
 
                 a.setF(new F1());
                 double[] tr1 = a.transform(new double[]{-1.9, 2.0}, new int[]{0, 1}, new int[]{});
@@ -380,7 +363,7 @@ public class Main {
 
                 System.out.println("F(x) = " + a.getF().execute(tr2));
 
-            }else if(line.contains("peti")){
+            } else if (line.contains("peti")) {
 
                 a.setF(new F4());
                 double[] tr1 = a.transform(new double[]{0.0, 0.0}, new int[]{2, 3}, new int[]{0});
@@ -408,10 +391,100 @@ public class Main {
 
                 System.out.println("F(x) = " + a.getF().execute(tr2));
 
+            } else if (line.contains("GA")) {
+
+                System.out.println("GENETIC ALGORITHM parameters: ");
+                System.out.println("Broj varijabli: " + a.getBrojVarijabli());
+                System.out.println("Velicina populacije: " + a.getPopsize());
+                System.out.println("Broj iteracija: " + a.getTreshold());
+                System.out.println("Binarni prikaz: " + a.isBinarniPrikaz());
+                System.out.println("Inacica (najboljih n): " + a.getInacica());
+                System.out.println("Donja i gornja granica: (" + a.getDg().get(0) + ", " + a.getGg().get(0) + ")");
+                System.out.println("Vjerojatnost mutacije: " + a.getP());
+                System.out.println("Broj presjeka kromosoma za krizanje: " + a.getM());
+                System.out.println("");
+
+                a.GA();
+
+            } else if (line.contains("brojvar = ")) {
+                Integer broj = Integer.parseInt(line.substring(10));
+
+                a.setBrojVarijabli(broj);
+            } else if (line.contains("pk = ")) {
+                Double broj = Double.parseDouble(line.substring(5));
+                a.setPk(broj);
+            } else if (line.contains("treshold = ")) {
+                Integer broj = Integer.parseInt(line.substring(11));
+                a.setTreshold(broj);
+            } else if (line.contains("popsize = ")) {
+                Integer broj = Integer.parseInt(line.substring(10));
+                a.setPopsize(broj);
+            } else if (line.contains("inacica = ")) {
+                Integer broj = Integer.parseInt(line.substring(10));
+                a.setInacica(broj);
+            } else if (line.contains("bin = ")) {
+                Integer broj = Integer.parseInt(line.substring(6));
+                if (broj == 1) {
+                    a.setBinarniPrikaz(true);
+                }
+            } else if (line.contains("pradij = ")) {
+                Double broj = Double.parseDouble(line.substring(9));
+                a.setPradij(broj);
+            } else if (line.contains("radij = ")) {
+                String bitovi = line.substring(8);
+
+                char[] bits = bitovi.toCharArray();
+
+                int[] intBits = new int[bits.length];
+                int i = 0;
+                for (char c : bits) {
+                    intBits[i] = c;
+                    i++;
+                }
+
+                a.setRadijCustom(intBits);
+
+            } else if (line.contains("limit = ")) {
+
+                String[] params = line.substring(8).split(", ");
+
+                a.setLimits(Double.parseDouble(params[0]), Double.parseDouble(params[1]), Integer.parseInt(params[2]), false);
+
+            } else if (line.contains("limitall = ")) {
+
+                String[] params = line.substring(11).split(", ");
+
+                a.setLimits(Double.parseDouble(params[0]), Double.parseDouble(params[1]), 0, true);
+
+            } else if (line.contains("e = ")) {
+                a.setE(Double.parseDouble(line.substring(4)));
+            } else if (line.contains("h = ")) {
+                a.setH(Double.parseDouble(line.substring(4)));
+            } else if (line.contains("p = ")) {
+                Double broj = Double.parseDouble(line.substring(4));
+                a.setP(broj);
+
+            }else if (line.contains("M = ")) {
+                Integer broj = Integer.parseInt(line.substring(4));
+                a.setM(broj);
+            } else if (line.contains("f = ")) {
+                String fun = line.substring(4);
+
+                if (fun.equals("f1")) {
+                    a.setF(new F1());
+                } else if (fun.equals("f2")) {
+                    a.setF(new F2());
+                } else if (fun.equals("f3")) {
+                    a.setF(new F3());
+                } else if (fun.equals("f4")) {
+                    a.setF(new F4());
+                } else if (fun.equals("f0")) {
+                    a.setF(new F0());
+                } else {
+
+                }
             }
 
         }
-
     }
-
 }
