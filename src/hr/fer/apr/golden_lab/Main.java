@@ -1,8 +1,22 @@
 package hr.fer.apr.golden_lab;
 
 import hr.fer.apr.golden_lab.functions.*;
+import hr.fer.apr.linear_algebra.IMatrix;
+import hr.fer.apr.linear_algebra.MatrixFile;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DatasetGroup;
+import org.jfree.data.xy.DefaultXYZDataset;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYZDataset;
+import org.jfree.ui.IntegerDocument;
+import org.jfree.ui.RefineryUtilities;
 
+import javax.swing.*;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.function.IntBinaryOperator;
 
@@ -456,6 +470,25 @@ public class Main {
 
                 a.setLimits(Double.parseDouble(params[0]), Double.parseDouble(params[1]), 0, true);
 
+            }else if(line.contains("trapez(")){
+
+                String params = line.substring(line.indexOf("(")+1, line.indexOf(")"));
+                IMatrix A = MatrixFile.readMatrix(PATH + params.split(", ")[0] + ".txt");
+                IMatrix B = MatrixFile.readMatrix(PATH + params.split(", ")[1] + ".txt");
+                IMatrix x = MatrixFile.readMatrix(PATH + params.split(", ")[2] + ".txt");
+
+                List<IMatrix> xks = a.trapez(A, B, x);
+
+                List<Integer> xAxis = new ArrayList<>();
+                for(int i=a.getTmin(); i<a.getTmax(); i++){
+                    xAxis.add(i);
+                }
+
+                Chart chart = new Chart("Trapezni graf", "vrijeme vs x", xAxis, xks);
+                chart.pack();
+                RefineryUtilities.centerFrameOnScreen(chart);
+                chart.setVisible(true);
+
             } else if (line.contains("e = ")) {
                 a.setE(Double.parseDouble(line.substring(4)));
             } else if (line.contains("h = ")) {
@@ -483,6 +516,12 @@ public class Main {
                 } else {
 
                 }
+            }else if(line.contains("tmax = ")){
+                Integer broj = Integer.parseInt(line.substring(7));
+                a.setTmax(broj);
+            }else if(line.contains("T = ")){
+                Double broj = Double.parseDouble(line.substring(4));
+                a.setT(broj);
             }
 
         }

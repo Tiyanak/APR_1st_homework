@@ -52,6 +52,23 @@ public class Matrix  extends MathMat{
 		this.elements = elements;
 	}
 
+	public Matrix(int dimension, boolean U){
+		super();
+		this.rows = dimension;
+		this.cols = dimension;
+		this.elements = new double[dimension][dimension];
+
+		for(int i=0; i<dimension; i++){
+			this.elements[i][i] = 1.0;
+			for(int j=0; j<dimension; j++){
+				if(i != j){
+					this.elements[i][j] = 0.0;
+				}
+			}
+		}
+
+	}
+
 	public int getRowsCount() {
 		return rows;
 	}

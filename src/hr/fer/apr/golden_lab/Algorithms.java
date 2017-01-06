@@ -7,6 +7,7 @@ import hr.fer.apr.golden_lab.functions.Limits;
 import hr.fer.apr.linear_algebra.IMatrix;
 import hr.fer.apr.linear_algebra.Matrix;
 
+import javax.swing.*;
 import java.util.*;
 
 /**
@@ -17,10 +18,10 @@ public class Algorithms {
 
     private final double k;
     private double[] l, r;
-    private double h, e, alfa, beta, gama, pomak, sigma, t, p, pk;
+    private double h, e, alfa, beta, gama, pomak, sigma, t, p, pk, T;
     private List<Double> dg, gg;
     private IFunctions f;
-    private int treshold, popsize, M, inacica, brojVarijabli;
+    private int treshold, popsize, M, inacica, brojVarijabli, itNumber, tmin, tmax;
     private boolean binarniPrikaz;
     private List<Integer> brojBitova;
     private int[][] radijVektor;
@@ -51,6 +52,10 @@ public class Algorithms {
         this.brojBitova = new ArrayList<>();
         this.brojVarijabli = 2;
         this.pradij = 1.0;
+        this.T = 1.0;
+        this.tmin = 0;
+        this.tmax = 10;
+        this.itNumber = 1;
 
         initOgranicenja();
 
@@ -1630,6 +1635,55 @@ public class Algorithms {
 
     }
 
+    public void rk(){
+
+    }
+
+    public List<IMatrix> trapez(IMatrix A, IMatrix B, IMatrix xk){
+
+        List<IMatrix> xks = new ArrayList<>();
+        xks.add(xk);
+
+        int tmin = this.tmin, tmax = this.tmax;
+        while(tmin < tmax){
+
+            IMatrix a = UATinv(A).copy().mul(UAT(A)).copy().mul(xks.get(tmin).copy()).copy();
+            IMatrix b = UATinv(A).copy().mul(B.copy().scalarMul(this.T)).copy();
+            IMatrix xkplus1 = a.nSum(b);
+
+            xks.add(xkplus1);
+
+            if(tmax % this.itNumber == 0){
+                System.out.print("k = " + tmin);
+                xks.get(tmin).printMatrix();
+            }
+
+            tmin += 1;
+
+        }
+
+        return xks;
+
+    }
+
+    public IMatrix UATinv(IMatrix A){
+
+        IMatrix U = new Matrix(A.getRowsCount(), true);
+        IMatrix AT = A.copy().scalarMul(this.T / 2.0);
+
+        return  U.nSub(AT).inv();
+
+    }
+
+    public IMatrix UAT(IMatrix A){
+
+        IMatrix U = new Matrix(A.getRowsCount(), true);
+        IMatrix AT = A.copy().scalarMul(this.T / 2.0);
+
+        return U.nSum(AT);
+
+    }
+
     public double getH() {
         return h;
     }
@@ -1708,14 +1762,6 @@ public class Algorithms {
 
     public double[] getR() {
         return r;
-    }
-
-    public double getT() {
-        return t;
-    }
-
-    public void setT(double t) {
-        this.t = t;
     }
 
     public int getTreshold() {
@@ -1820,5 +1866,37 @@ public class Algorithms {
 
     public void setPradij(double pradij) {
         this.pradij = pradij;
+    }
+
+    public int getItNumber() {
+        return itNumber;
+    }
+
+    public void setItNumber(int itNumber) {
+        this.itNumber = itNumber;
+    }
+
+    public int getTmin() {
+        return tmin;
+    }
+
+    public void setTmin(int tmin) {
+        this.tmin = tmin;
+    }
+
+    public int getTmax() {
+        return tmax;
+    }
+
+    public void setTmax(int tmax) {
+        this.tmax = tmax;
+    }
+
+    public double getT() {
+        return this.T;
+    }
+
+    public void setT(double T) {
+        this.T = t;
     }
 }
