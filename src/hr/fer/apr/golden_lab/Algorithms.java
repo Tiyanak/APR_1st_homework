@@ -1,13 +1,12 @@
 package hr.fer.apr.golden_lab;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
+import com.sun.prism.Image;
 import hr.fer.apr.golden_lab.functions.F1;
 import hr.fer.apr.golden_lab.functions.IFunctions;
 import hr.fer.apr.golden_lab.functions.Limits;
 import hr.fer.apr.linear_algebra.IMatrix;
 import hr.fer.apr.linear_algebra.Matrix;
 
-import javax.swing.*;
 import java.util.*;
 
 /**
@@ -54,7 +53,7 @@ public class Algorithms {
         this.pradij = 1.0;
         this.T = 1.0;
         this.tmin = 0;
-        this.tmax = 10;
+        this.tmax = 30;
         this.itNumber = 1;
 
         initOgranicenja();
@@ -1635,8 +1634,69 @@ public class Algorithms {
 
     }
 
-    public void rk(){
+    public List<IMatrix> rk(IMatrix A, IMatrix B, IMatrix xk){
 
+        List<IMatrix> xks = new ArrayList<>();
+        xks.add(xk);
+
+        int tmin = this.tmin, tmax = this.tmax;
+        while(tmin < tmax){
+
+            IMatrix m1 = getM1(A, B, xks.get(tmin).copy());
+            IMatrix m2 = getM2(A, B, m1.copy(), xks.get(tmin).copy());
+            IMatrix m3 = getM3(A, B, m2.copy(), xks.get(tmin).copy());
+            IMatrix m4 = getM4(A, B, m3.copy(), xks.get(tmin).copy());
+
+            IMatrix xkplus1 = getXkplus1(xks.get(tmin).copy(), m1, m2, m3, m4);
+
+            xks.add(xkplus1);
+
+            if(tmax % this.itNumber == 0){
+                System.out.println("k = " + tmin);
+                xks.get(tmin).printMatrix();
+            }
+
+            tmin += 1;
+
+        }
+
+        return xks;
+
+    }
+
+    public IMatrix getM1(IMatrix A, IMatrix B, IMatrix xk){
+        return A.mul(xk);
+    }
+
+    public IMatrix getM2(IMatrix A, IMatrix B, IMatrix m1, IMatrix xk){
+        IMatrix temp = new Matrix();
+        temp = m1.scalarMul(this.T / 2.0);
+        temp = temp.nSum(xk);
+
+        return A.mul(temp);
+    }
+
+    public IMatrix getM3(IMatrix A, IMatrix B, IMatrix m2, IMatrix xk){
+        IMatrix temp = new Matrix();
+        temp = m2.scalarMul(this.T / 2.0);
+        temp = temp.nSum(xk);
+
+        return A.mul(temp);
+    }
+
+    public IMatrix getM4(IMatrix A, IMatrix B, IMatrix m3, IMatrix xk){
+        IMatrix temp = new Matrix();
+        temp = m3.scalarMul(this.T);
+        temp = temp.nSum(xk);
+
+        return A.mul(temp);
+    }
+
+    public IMatrix getXkplus1(IMatrix xk, IMatrix m1, IMatrix m2, IMatrix m3, IMatrix m4){
+        IMatrix temp = new Matrix();
+        temp = m1.nSum(m2.scalarMul(2)).nSum(m3.scalarMul(2)).nSum(m4).scalarMul(this.T / 6.0).nSum(xk);
+
+        return temp;
     }
 
     public List<IMatrix> trapez(IMatrix A, IMatrix B, IMatrix xk){
@@ -1897,6 +1957,6 @@ public class Algorithms {
     }
 
     public void setT(double T) {
-        this.T = t;
+        this.T = T;
     }
 }

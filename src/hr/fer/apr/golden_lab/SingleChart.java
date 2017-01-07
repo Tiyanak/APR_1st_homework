@@ -16,12 +16,11 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Created by Igor on 26.12.2016..
+ * Created by Igor on 6.1.2017..
  */
-public class Chart extends ApplicationFrame{
+public class SingleChart extends ApplicationFrame{
 
-
-    public Chart(String applicationTitle, String title, List<Integer> x, List<IMatrix> y) {
+    public SingleChart(String applicationTitle, String title, List<Integer> x, List<IMatrix> y) {
         super(applicationTitle);
 
         JFreeChart chart = ChartFactory.createXYLineChart(
@@ -38,9 +37,7 @@ public class Chart extends ApplicationFrame{
         final XYPlot plot = chart.getXYPlot();
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer( );
         renderer.setSeriesPaint( 0 , Color.RED );
-        renderer.setSeriesPaint( 1 , Color.GREEN );
         renderer.setSeriesStroke( 0 , new BasicStroke( 4.0f ) );
-        renderer.setSeriesStroke( 1 , new BasicStroke( 3.0f ) );
         plot.setRenderer( renderer );
         setContentPane( chartPanel );
 
@@ -49,16 +46,13 @@ public class Chart extends ApplicationFrame{
     private XYDataset createDataset(List<Integer> x, List<IMatrix> y){
 
         final XYSeries firstdim = new XYSeries("1. dimension");
-        final XYSeries seconddim = new XYSeries("2. dimension");
 
         for(int i=0; i<x.size(); i++){
             firstdim.add((double)x.get(i), y.get(i).getElement(0, 0));
-            seconddim.add((double)x.get(i), y.get(i).getElement(1, 0));
         }
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(firstdim);
-        dataset.addSeries(seconddim);
 
         return dataset;
 

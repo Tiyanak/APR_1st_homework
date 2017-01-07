@@ -3,13 +3,24 @@
   <component name="ChangeListManager">
     <list default="true" id="365708d5-f30c-4ed4-9a9e-790e1c07a18b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/Algorithms.class" afterPath="$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/Algorithms.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/Chart.class" afterPath="$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/Chart.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/Main.class" afterPath="$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/Matrix.class" afterPath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/Matrix.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/functions/IFunctions.class" afterPath="$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/functions/IFunctions.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/ConsoleParser.class" afterPath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/ConsoleParser.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/Main.class" afterPath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/Main.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/MathMat.class" afterPath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/MathMat.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/MatrixFile.class" afterPath="$PROJECT_DIR$/bin/hr/fer/apr/linear_algebra/MatrixFile.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.classpath" afterPath="$PROJECT_DIR$/.classpath" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/APR.eml" afterPath="$PROJECT_DIR$/APR.eml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java" afterPath="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Chart.java" afterPath="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Chart.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Main.java" afterPath="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Matrix.java" afterPath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Matrix.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/functions/IFunctions.java" afterPath="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/functions/IFunctions.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/ConsoleParser.java" afterPath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/ConsoleParser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Main.java" afterPath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java" afterPath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MatrixFile.java" afterPath="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MatrixFile.java" />
     </list>
     <ignored path="APR.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,18 +50,19 @@
       <file leaf-file-name="Matrix.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Matrix.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1547">
-              <caret line="99" column="0" lean-forward="false" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
-              <folding>
-                <element signature="e#1428#1429#0" expanded="false" />
-                <element signature="e#1446#1447#0" expanded="false" />
-                <element signature="e#1590#1591#0" expanded="false" />
-                <element signature="e#1608#1609#0" expanded="false" />
-                <element signature="e#1758#1759#0" expanded="false" />
-                <element signature="e#1780#1781#0" expanded="false" />
-                <element signature="e#1829#1830#0" expanded="false" />
-                <element signature="e#1860#1861#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="153">
+              <caret line="109" column="0" lean-forward="false" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MathMat.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="295">
+              <caret line="146" column="0" lean-forward="false" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -58,18 +70,20 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8568">
-              <caret line="522" column="48" lean-forward="false" selection-start-line="522" selection-start-column="48" selection-end-line="522" selection-end-column="48" />
-              <folding />
+            <state relative-caret-position="158">
+              <caret line="554" column="0" lean-forward="false" selection-start-line="554" selection-start-column="0" selection-end-line="554" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Chart.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Chart.java">
+      <file leaf-file-name="SingleChart.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/SingleChart.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="39" column="68" lean-forward="false" selection-start-line="39" selection-start-column="68" selection-end-line="39" selection-end-column="68" />
+            <state relative-caret-position="289">
+              <caret line="53" column="31" lean-forward="false" selection-start-line="53" selection-start-column="31" selection-end-line="53" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -80,9 +94,13 @@
       <file leaf-file-name="Algorithms.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1657" column="44" lean-forward="false" selection-start-line="1657" selection-start-column="44" selection-end-line="1657" selection-end-column="44" />
-              <folding />
+            <state relative-caret-position="547">
+              <caret line="1959" column="18" lean-forward="false" selection-start-line="1959" selection-start-column="18" selection-end-line="1959" selection-end-column="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#44506#44507#0" expanded="true" />
+                <element signature="e#44538#44539#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -107,8 +125,11 @@
       <find>tmin</find>
       <find>T</find>
       <find>getT</find>
-      <find>setT</find>
       <find>t</find>
+      <find>trapez</find>
+      <find>rk(</find>
+      <find>T =</find>
+      <find>setT</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -144,6 +165,9 @@
         <option value="$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Matrix.java" />
         <option value="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Graph.java" />
         <option value="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Chart.java" />
+        <option value="$PROJECT_DIR$/.classpath" />
+        <option value="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/functions/SingleChart.java" />
+        <option value="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/SingleChart.java" />
         <option value="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Main.java" />
         <option value="$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java" />
       </list>
@@ -156,9 +180,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1616" />
+    <option name="x" value="-4" />
+    <option name="width" value="1612" />
     <option name="height" value="876" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -196,10 +219,46 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="APR_1st_homework">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="APR_1st_homework">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="APR_1st_homework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="APR_1st_homework" />
@@ -225,10 +284,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="apr" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="linear_algebra" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -254,8 +309,35 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="APR_1st_homework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="APR_1st_homework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="golden_lab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="functions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -264,10 +346,10 @@
     <property name="settings.editor.selected.configurable" value="database.main" />
     <property name="settings.editor.splitter.proportion" value="0.23408423" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/jcommon-1.0.23.jar!/" />
     <property name="js.eslint.eslintPackage" value="" />
   </component>
   <component name="RunManager" selected="Application.Main (1)">
@@ -845,44 +927,45 @@
       <workItem from="1482669158368" duration="2207000" />
       <workItem from="1482741784357" duration="13013000" />
       <workItem from="1482821674875" duration="520000" />
-      <workItem from="1483719745167" duration="432000" />
+      <workItem from="1483719745167" duration="1822000" />
+      <workItem from="1483723193547" duration="5647000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="318411000" />
+    <option name="totallyTimeSpent" value="325448000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="7" />
+    <frame x="-4" y="0" width="1612" height="876" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="false" show_stripe_button="true" weight="0.32968238" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" x="0" y="365" width="1914" height="301" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3550914" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3550914" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.191875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19235589" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44125327" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44125327" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32898173" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -906,67 +989,67 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java</url>
-          <line>170</line>
+          <line>168</line>
           <properties />
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java</url>
-          <line>221</line>
+          <line>219</line>
           <properties />
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java</url>
-          <line>325</line>
+          <line>323</line>
           <properties />
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java</url>
-          <line>338</line>
+          <line>336</line>
           <properties />
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java</url>
-          <line>341</line>
+          <line>339</line>
           <properties />
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>96</line>
+          <line>95</line>
           <properties />
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>650</line>
+          <line>649</line>
           <properties />
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>685</line>
+          <line>684</line>
           <properties />
           <option name="timeStamp" value="40" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>703</line>
+          <line>702</line>
           <properties />
           <option name="timeStamp" value="41" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>726</line>
+          <line>725</line>
           <properties />
           <option name="timeStamp" value="42" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>714</line>
+          <line>713</line>
           <properties />
           <option name="timeStamp" value="43" />
         </line-breakpoint>
@@ -978,96 +1061,102 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>436</line>
+          <line>435</line>
           <properties />
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>162</line>
+          <line>161</line>
           <properties />
           <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>355</line>
+          <line>354</line>
           <properties />
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>351</line>
+          <line>350</line>
           <properties />
           <option name="timeStamp" value="58" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>904</line>
+          <line>903</line>
           <properties />
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>1097</line>
+          <line>1096</line>
           <properties />
           <option name="timeStamp" value="65" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>1108</line>
+          <line>1107</line>
           <properties />
           <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Matrix.java</url>
-          <line>107</line>
-          <properties />
-          <option name="timeStamp" value="102" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Main.java</url>
-          <line>275</line>
+          <line>265</line>
           <properties />
           <option name="timeStamp" value="104" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>780</line>
+          <line>779</line>
           <properties />
           <option name="timeStamp" value="106" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>797</line>
+          <line>796</line>
           <properties />
           <option name="timeStamp" value="109" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>801</line>
+          <line>800</line>
           <properties />
           <option name="timeStamp" value="111" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>1643</line>
+          <line>1703</line>
           <properties />
           <option name="timeStamp" value="169" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>1670</line>
+          <line>1730</line>
           <properties />
           <option name="timeStamp" value="170" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
-          <line>1679</line>
+          <line>1739</line>
           <properties />
           <option name="timeStamp" value="171" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java</url>
+          <line>1638</line>
+          <properties />
+          <option name="timeStamp" value="172" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Main.java</url>
+          <line>553</line>
+          <properties />
+          <option name="timeStamp" value="173" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="172" />
+      <option name="time" value="174" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -1081,21 +1170,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/IMatrix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="31" column="18" lean-forward="false" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Matrix.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2420">
@@ -1348,13 +1422,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/Algorithms.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="1572" column="0" lean-forward="true" selection-start-line="1572" selection-start-column="0" selection-end-line="1572" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/hr/fer/apr/golden_lab/Algorithms.class" />
     <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/IMatrix.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
@@ -1376,46 +1444,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="142" column="25" lean-forward="false" selection-start-line="142" selection-start-column="19" selection-end-line="142" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Graph.java" />
     <entry file="jar://$PROJECT_DIR$/lib/jfreechart-1.0.19.jar!/org/jfree/data/general/DatasetGroup.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="53">
           <caret line="14" column="11" lean-forward="false" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Matrix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1547">
-          <caret line="99" column="0" lean-forward="false" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
-          <folding>
-            <element signature="e#1428#1429#0" expanded="false" />
-            <element signature="e#1446#1447#0" expanded="false" />
-            <element signature="e#1590#1591#0" expanded="false" />
-            <element signature="e#1608#1609#0" expanded="false" />
-            <element signature="e#1758#1759#0" expanded="false" />
-            <element signature="e#1780#1781#0" expanded="false" />
-            <element signature="e#1829#1830#0" expanded="false" />
-            <element signature="e#1860#1861#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Chart.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="39" column="68" lean-forward="false" selection-start-line="39" selection-start-column="68" selection-end-line="39" selection-end-column="68" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1426,19 +1459,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.classpath">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Chart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="64" column="5" lean-forward="true" selection-start-line="23" selection-start-column="4" selection-end-line="64" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/SingleChart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="53" column="31" lean-forward="false" selection-start-line="53" selection-start-column="31" selection-end-line="53" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/Matrix.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="109" column="0" lean-forward="false" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/linear_algebra/MathMat.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="146" column="0" lean-forward="false" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8568">
-          <caret line="522" column="48" lean-forward="false" selection-start-line="522" selection-start-column="48" selection-end-line="522" selection-end-column="48" />
-          <folding />
+        <state relative-caret-position="158">
+          <caret line="554" column="0" lean-forward="false" selection-start-line="554" selection-start-column="0" selection-end-line="554" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hr/fer/apr/golden_lab/Algorithms.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1657" column="44" lean-forward="false" selection-start-line="1657" selection-start-column="44" selection-end-line="1657" selection-end-column="44" />
-          <folding />
+        <state relative-caret-position="547">
+          <caret line="1959" column="18" lean-forward="false" selection-start-line="1959" selection-start-column="18" selection-end-line="1959" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#44506#44507#0" expanded="true" />
+            <element signature="e#44538#44539#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1519,6 +1600,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>jcommon-1.0.23</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

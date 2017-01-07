@@ -1,7 +1,5 @@
 package hr.fer.apr.linear_algebra;
 
-import javax.swing.*;
-
 /**
  * Abstraktna klasa implementira operacije racunanja sa matricama
  * lu i lup dekompozicija te substitucija unaprije i unazad
