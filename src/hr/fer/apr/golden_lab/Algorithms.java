@@ -70,6 +70,19 @@ public class Algorithms {
 
     }
 
+    public void refactOgr(){
+        double dg = this.dg.get(0);
+        double gg = this.gg.get(1);
+        this.dg.clear();
+        this.gg.clear();
+        for (int i=0; i<this.brojVarijabli; i++){
+            this.dg.add(dg);
+            this.gg.add((gg));
+        }
+
+        this.radijVektor = new int[this.brojVarijabli][];
+    }
+
     public void setRadijCustom(int[] vektor){
         for(int i=0; i<brojVarijabli; i++){
             this.radijVektor[i] = vektor;

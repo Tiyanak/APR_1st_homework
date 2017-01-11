@@ -414,6 +414,8 @@ public class Main {
                 Integer broj = Integer.parseInt(line.substring(10));
 
                 a.setBrojVarijabli(broj);
+
+                a.refactOgr();
             } else if (line.contains("pk = ")) {
                 Double broj = Double.parseDouble(line.substring(5));
                 a.setPk(broj);
@@ -430,6 +432,8 @@ public class Main {
                 Integer broj = Integer.parseInt(line.substring(6));
                 if (broj == 1) {
                     a.setBinarniPrikaz(true);
+                }else{
+                    a.setBinarniPrikaz(false);
                 }
             } else if (line.contains("pradij = ")) {
                 Double broj = Double.parseDouble(line.substring(9));
